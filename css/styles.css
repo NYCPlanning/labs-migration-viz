@@ -2,3 +2,8 @@
 
 .in { fill: #46b481; }
 .out { fill: #da5959; }
+
+.center-axis {
+  stroke: #6b6b6d;
+  stroke-width: 1;
+}
