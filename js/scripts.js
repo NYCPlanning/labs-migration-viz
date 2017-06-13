@@ -3,7 +3,7 @@ function renderChart(el, data) {
       yMax = 300000;
 
   // set the dimensions and margins of the graph
-  var margin = {top: 20, right: 20, bottom: 30, left: 60},
+  var margin = {top: 20, right: 10, bottom: 30, left: 10},
       width = 300 - margin.left - margin.right,
       height = 200 - margin.top - margin.bottom;
 
@@ -75,9 +75,9 @@ function renderChart(el, data) {
       .attr("transform", "translate(0," + height + ")")
       .call(d3.axisBottom(x));
 
-  // add the y Axis
-  svg.append("g")
-      .call(d3.axisLeft(y));
+  // // add the y Axis
+  // svg.append("g")
+  //     .call(d3.axisLeft(y));
 
 
 }
@@ -85,10 +85,9 @@ function renderChart(el, data) {
 // get the data
 d3.json("data/age.json", function(error, data) {
   if (error) throw error;
-  renderChart("body", data['1935_1940'])
-});
-
-d3.json("data/age.json", function(error, data) {
-  if (error) throw error;
-  renderChart("body", data['1975_1980'])
+  renderChart("body", data['1935_1940']);
+  renderChart("body", data['1975_1980']);
+  renderChart("body", data['1985_1990']);
+  renderChart("body", data['1995_2000']);
+  renderChart("body", data['2010_2014']);
 });
