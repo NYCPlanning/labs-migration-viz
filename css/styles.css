@@ -2,10 +2,72 @@
 
 .bar { fill: steelblue; }
 
-.in { fill: #46b481; }
-.out { fill: #da5959; }
+
+.in { fill: rgba(70, 180, 129, 0.5); }
+.out { fill:rgba(218, 89, 89, 0.5);; }
+
+.in-selected { fill: #46b481; }
+.out-selected { fill: #da5959; }
 
 .center-axis {
   stroke: #6b6b6d;
   stroke-width: 1;
 }
+
+#content {
+  margin-top: 50px;
+}
+
+
+/*Common DCP Navbar*/
+.navbar-collapse.collapsing, .navbar-collapse.in, .navbar-default {
+  background-color: hsla(0,0%,100%,.94);
+}
+
+.navbar-default .navbar-brand {
+  background-image: url('https://capitalplanning.nyc.gov/img/logo_120.png');
+  background-repeat: no-repeat;
+  background-position: 16px 9px;
+  background-size: 66px;
+  height: 50px;
+  width: 100px;
+  padding: 0;
+}
+
+.navbar-title {
+  float: left;
+  color: #d96b27;
+  font-size: 22px;
+  line-height: 50px;
+}
+
+.navbar-title .title {
+  color: #959595;
+  font-weight: 300;
+}
+
+.dropdown-menu>li>a, .navbar-default .navbar-nav>li>a {
+    padding: 15px 18px;
+    color: #db691b;
+    font-size: 16px;
+    font-weight: 300;
+}
+
+nav {
+  font-family: Oswald,sans-serif;
+}
+
+ul.navbar-right {
+    margin-right: 0;
+}
+
+.navbar-default .navbar-nav>li:hover {
+    background: #eee;
+}
+
+.navbar-default .navbar-brand:focus, .navbar-default .navbar-brand:hover, .navbar-default .navbar-nav>li>a:hover {
+    color: #af4c0f;
+    cursor: pointer;
+}
+
+/*End Common DCP Navbar*/
