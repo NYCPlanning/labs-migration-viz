@@ -31,6 +31,15 @@ function renderChart(data) {
     .attr('width', width + margin.left + margin.right)
     .attr('height', height + margin.top + margin.bottom);
 
+  svg.append('line')
+      .attr('class', 'center-axis')
+      .attr('x1', 0)
+      .attr('y1', y(0) + margin.top)
+      .attr('x2', width)
+      .attr('y2', y(0) + margin.top)
+      .attr('width', width);
+
+  // add g elements for each chart, offset by outerX scale
   var g = svg.selectAll('g')
     .data(Object.keys(data))
     .enter()
