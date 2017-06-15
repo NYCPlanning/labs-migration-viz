@@ -1,5 +1,7 @@
 /*body { background: #2c2c2c; }*/
 
+svg { background: #e1e1e1; }
+
 .bar { fill: steelblue; }
 
 
@@ -14,7 +16,7 @@
   stroke-width: 1;
 }
 
-#content {
+.container-fluid {
   margin-top: 50px;
 }
 
