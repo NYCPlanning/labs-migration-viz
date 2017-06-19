@@ -1,4 +1,7 @@
-function renderChart(data) {
+var svg;
+var currentData;
+
+function updateChart() {
   var clientRect = d3.select('body').node().getBoundingClientRect();
 
   var yMin = -300000;
@@ -11,13 +14,13 @@ function renderChart(data) {
 
   // x scale to render each chart across the same axis
   var outerX = d3.scaleBand()
-    .domain(Object.keys(data))
+    .domain(Object.keys(currentData))
     .range([0, width])
     .padding(0.1);
 
   // local x scale
   var x = d3.scaleBand()
-    .domain(data['1935_1940'].map(function (d) { return d.label; }))
+    .domain(currentData['1935_1940'].map(function (d) { return d.label; }))
     .range([0, width / 6])
     .padding(0.1);
 
@@ -27,56 +30,73 @@ function renderChart(data) {
     .range([height, 0]);
 
   // add main svg element
-  var svg = d3.select('.container-fluid').append('svg')
+  svg
     .attr('width', width + margin.left + margin.right)
     .attr('height', height + margin.top + margin.bottom);
 
-  svg.append('line')
-      .attr('class', 'center-axis')
-      .attr('x1', 0)
-      .attr('y1', y(0) + margin.top)
-      .attr('x2', width)
-      .attr('y2', y(0) + margin.top)
-      .attr('width', width);
+  svg.selectAll('line')
+    .attr('class', 'center-axis')
+    .attr('x1', 0)
+    .attr('y1', y(0) + margin.top)
+    .attr('x2', width + margin.left + margin.right)
+    .attr('y2', y(0) + margin.top)
+    .attr('width', width);
 
   // add g elements for each chart, offset by outerX scale
   var g = svg.selectAll('g')
-    .data(Object.keys(data))
+    .data(Object.keys(currentData));
+
+  g
     .enter()
     .append('g')
     .attr('class', 'subbox')
+    .merge(g)
     .attr('transform', function (d) {
-      return 'translate(' + outerX(d) + ',' + margin.top + ')';
+      return 'translate(' + (outerX(d) + margin.left ) + ',' + margin.top + ')';
     });
 
   // append the inflow rectangles
-  g.selectAll('.in')
-    .data(function (d) { return data[d]; })
+  var ins = svg.selectAll('g').selectAll('.in')
+    .data(function(d) {
+      return currentData[d];
+    });
+
+  //console.log(g, ins)
+
+  ins
     .enter()
     .append('rect')
       .attr('class', function (d) { return 'bar in ' + d.label; })
+    .merge(ins)
       .attr('x', function (d) { return x(d.label); })
       .attr('width', x.bandwidth())
       .attr('y', function (d) { return y(d.in); })
       .attr('height', function (d) { return y(0) - y(d.in); });
 
   // append the outflow rectangles
-  g.selectAll('.out')
-    .data(function (d) { return data[d]; })
+  var outs = svg.selectAll('g').selectAll('.out')
+    .data(function (d) { return currentData[d]; });
+
+  outs
+    .data(function (d) { return currentData[d]; })
     .enter()
     .append('rect')
       .attr('class', 'bar out')
+    .merge(outs)
       .attr('x', function (d) { return x(d.label); })
       .attr('width', x.bandwidth())
       .attr('y', function () { return y(0); })
       .attr('height', function (d) { return y(0) - y(d.out); });
 
   // append net migration dots
-  g.selectAll('.net')
-    .data(function (d) { return data[d]; })
+  var nets = svg.selectAll('g').selectAll('.net')
+    .data(function (d) { return currentData[d]; });
+
+  nets
     .enter()
     .append('circle')
       .attr('class', 'net')
+    .merge(nets)
       .attr('cy', function (d) {
         var net = d.in - d.out;
         return y(net);
@@ -86,11 +106,20 @@ function renderChart(data) {
       .attr('fill', 'black');
 }
 
+function initializeChart() {
+  // add main svg element
+  svg = d3.select('.container-fluid').append('svg');
+
+  svg.append('line');
+  updateChart();
+}
+
 // get the data
 d3.json('data/age.json', function (error, data) {
   if (error) throw error;
 
-  renderChart(data);
+  currentData = data;
+  initializeChart();
 });
 
-window.addEventListener('resize', function () {});
+window.addEventListener('resize', updateChart);
