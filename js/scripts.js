@@ -9,7 +9,7 @@ function updateChart() {
 
   // set the dimensions and margins of the graph
   var margin = { top: 20, right: 10, bottom: 30, left: 10 };
-  var width = clientRect.width - 30 - margin.left - margin.right;
+  var width = clientRect.width;
   var height = 250 - margin.top - margin.bottom;
 
   // x scale to render each chart across the same axis
@@ -52,16 +52,14 @@ function updateChart() {
     .attr('class', 'subbox')
     .merge(g)
     .attr('transform', function (d) {
-      return 'translate(' + (outerX(d) + margin.left ) + ',' + margin.top + ')';
+      return 'translate(' + (outerX(d) + margin.left) + ',' + margin.top + ')';
     });
 
   // append the inflow rectangles
   var ins = svg.selectAll('g').selectAll('.in')
-    .data(function(d) {
+    .data(function (d) {
       return currentData[d];
     });
-
-  //console.log(g, ins)
 
   ins
     .enter()

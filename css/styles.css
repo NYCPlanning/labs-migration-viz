@@ -1,6 +1,10 @@
 /*body { background: #2c2c2c; }*/
 
-svg { background: #e1e1e1; }
+svg {
+  background: #e1e1e1;
+  margin-left: -15px;
+  margin-right: -15px;
+}
 
 .bar { fill: steelblue; }
 
@@ -20,6 +24,20 @@ svg { background: #e1e1e1; }
   margin-top: 50px;
 }
 
+/*Since bootstrap can't do 20% wide columns, use this class that mimics col-XX-xx for the year labels*/
+.year-label {
+  text-align: center;
+  position: relative;
+  min-height: 1px;
+  padding-right: 15px;
+  padding-left: 15px;
+  width: 20%;
+  float:left;
+  font-size: 25px;
+  background: #e1e1e1;
+  color: #b9b9b9;
+  font-weight: 200;
+}
 
 /*Common DCP Navbar*/
 .navbar-collapse.collapsing, .navbar-collapse.in, .navbar-default {
