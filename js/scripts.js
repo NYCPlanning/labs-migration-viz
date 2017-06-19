@@ -1,6 +1,19 @@
 var svg;
 var currentData;
 
+function highlightBars(highlightData) {
+  var highlightYear = highlightData.label;
+
+
+  // add selected class to all bars of this type
+  svg
+    .selectAll('g')
+    .selectAll('.bar')
+    .classed('selected', function (d) {
+      return d.label === highlightYear;
+    });
+}
+
 function updateChart() {
   var clientRect = d3.select('body').node().getBoundingClientRect();
 
@@ -65,6 +78,7 @@ function updateChart() {
     .enter()
     .append('rect')
       .attr('class', function (d) { return 'bar in ' + d.label; })
+      .on('mouseenter', highlightBars)
     .merge(ins)
       .attr('x', function (d) { return x(d.label); })
       .attr('width', x.bandwidth())
@@ -80,6 +94,7 @@ function updateChart() {
     .enter()
     .append('rect')
       .attr('class', 'bar out')
+      .on('mouseenter', highlightBars)
     .merge(outs)
       .attr('x', function (d) { return x(d.label); })
       .attr('width', x.bandwidth())
