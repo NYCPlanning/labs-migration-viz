@@ -8,7 +8,7 @@ svg {
 
 .bar {
   fill: steelblue;
-  opacity: 0.5;
+  opacity: 0.2;
 }
 
 .bar:hover {
@@ -17,6 +17,15 @@ svg {
 
 .bar.selected {
   opacity: 1;
+}
+
+ .net.selected {
+   fill: #FFF;
+   opacity: 1;
+ }
+
+.net {
+  opacity: 0.2;
 }
 
 
