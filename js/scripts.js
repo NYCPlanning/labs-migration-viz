@@ -3,35 +3,42 @@ var currentData;
 var lineChartData = {};
 
 function highlightBars(highlightData) {
-  var highlightYear = highlightData.label;
-
+  var highlightCohort = highlightData.label;
 
   // add selected class to all bars with this label
   svg
     .selectAll('g')
     .selectAll('.bar')
     .classed('selected', function (d) {
-      return d.label === highlightYear;
+      return d.label === highlightCohort;
     });
 
+  // add selected class to all net circles with this label
   svg
     .selectAll('g')
     .selectAll('.net')
     .classed('selected', function (d) {
-      return d.label === highlightYear;
+      return d.label === highlightCohort;
+    });
+
+  // add selected class to all trendlines with this label
+  svg
+    .selectAll('.trendline')
+    .classed('selected', function (d) {
+      return d[0].label === highlightCohort;
     });
 }
 
 function updateChart() {
   var clientRect = d3.select('body').node().getBoundingClientRect();
 
-  var yMin = -300000;
-  var yMax = 300000;
+  var yMin = -400000;
+  var yMax = 400000;
 
   // set the dimensions and margins of the graph
   var margin = { top: 20, right: 10, bottom: 30, left: 10 };
   var width = clientRect.width;
-  var height = 350 - margin.top - margin.bottom;
+  var height = clientRect.height;
 
   // x scale to render each chart across the same axis
   var outerX = d3.scaleBand()
@@ -50,9 +57,14 @@ function updateChart() {
     .domain([yMin, yMax])
     .range([height, 0]);
 
+  var line = d3.line()
+    .x(function (d) { return outerX(d.year_range) + x(d.label) + margin.left + margin.right; })
+    .y(function (d) { return y(d.net) + margin.top; })
+    .curve(d3.curveCardinal);
+
   // add main svg element
-  svg.attr('width', width + margin.left + margin.right)
-    .attr('height', height + margin.top + margin.bottom);
+  svg.attr('width', width)
+    .attr('height', height);
 
   svg.selectAll('line')
     .attr('class', 'center-axis')
@@ -94,8 +106,7 @@ function updateChart() {
   var outs = svg.selectAll('g').selectAll('.out')
     .data(function (d) { return currentData[d]; });
 
-  outs.data(function (d) { return currentData[d]; })
-    .enter()
+  outs.enter()
     .append('rect')
       .attr('class', 'bar out')
       .on('mouseenter', highlightBars)
@@ -104,6 +115,24 @@ function updateChart() {
       .attr('width', x.bandwidth())
       .attr('y', function () { return y(0); })
       .attr('height', function (d) { return y(0) - y(d.out); });
+
+  // draw trendlines
+  var trendlines = svg.selectAll('path')
+    .data(Object.keys(lineChartData));
+
+  trendlines.enter()
+    .append('path')
+    .attr('class', 'trendline')
+    .merge(trendlines)
+    .datum(function (d) {
+      return lineChartData[d];
+    })
+    .attr('fill', 'none')
+    .attr('stroke', 'steelblue')
+    .attr('stroke-linejoin', 'round')
+    .attr('stroke-linecap', 'round')
+    .attr('stroke-width', 1.5)
+    .attr('d', line);
 
   // append net migration dots
   var nets = svg.selectAll('g').selectAll('.net')
@@ -120,31 +149,11 @@ function updateChart() {
       .attr('cx', function (d) { return x(d.label) + (x.bandwidth() / 2); })
       .attr('r', 3)
       .attr('fill', 'black');
-
-  var line = d3.line()
-    .x(function (d) { return outerX(d.year_range) + x(d.label) + margin.left + margin.right; })
-    .y(function (d) { return y(d.net) + margin.top; })
-    .curve(d3.curveCardinal);
-
-  // draw lines
-  svg.selectAll('path')
-    .data(Object.keys(lineChartData))
-    .enter()
-    .append('path')
-    .datum(function (d) {
-      return lineChartData[d];
-    })
-    .attr("fill", "none")
-    .attr("stroke", "steelblue")
-    .attr("stroke-linejoin", "round")
-    .attr("stroke-linecap", "round")
-    .attr("stroke-width", 1.5)
-    .attr('d', line);
 }
 
 function initializeChart() {
   // add main svg element
-  svg = d3.select('.container-fluid').append('svg');
+  svg = d3.select('.chart-container').append('svg');
 
   svg.append('line');
   updateChart();
@@ -159,12 +168,12 @@ d3.json('data/age.json', function (error, data) {
   // get number of bands
   var numBands = currentData[Object.keys(currentData)[0]].length;
 
-  // for (var i = 0; i < numBands; i += 1) {
-  for (var i = 0; i < 1; i += 1) {
+  for (var i = 0; i < numBands; i += 1) {
+  // for (var i = 0; i < 1; i += 1) {
     var label = currentData[Object.keys(currentData)[0]][i].label;
 
     var points = [];
-    Object.keys(currentData).forEach(function (key) {
+    Object.keys(currentData).forEach(function (key) { // eslint-disable-line
       var net = currentData[key][i].in - currentData[key][i].out;
 
       points.push({
@@ -176,8 +185,6 @@ d3.json('data/age.json', function (error, data) {
       lineChartData[label] = points;
     });
   }
-
-  console.log(lineChartData)
 
   initializeChart();
 });

@@ -1,13 +1,17 @@
-/*body { background: #2c2c2c; }*/
+html {
+  height: 100%;
+}
+
+body {
+  height: calc(100vh - 50px);
+}
 
 svg {
   background: #e1e1e1;
-  margin-left: -15px;
-  margin-right: -15px;
+  display: block;
 }
 
 .bar {
-  fill: steelblue;
   opacity: 0.2;
 }
 
@@ -26,6 +30,14 @@ svg {
 
 .net {
   opacity: 0.2;
+}
+
+.trendline {
+  opacity: 0;
+}
+
+.trendline.selected {
+  opacity: 1;
 }
 
 
@@ -55,8 +67,16 @@ svg {
   float:left;
   font-size: 25px;
   background: #e1e1e1;
-  color: #b9b9b9;
+  color: #848484;
   font-weight: 200;
+}
+
+.year-label-row {
+  position: absolute;
+  bottom: 0;
+  left: 15px;
+  right: 15px;
+  padding-bottom: 5px;
 }
 
 /*Common DCP Navbar*/
