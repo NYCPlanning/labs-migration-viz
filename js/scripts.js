@@ -152,6 +152,7 @@ function updateChart() {
       .attr('y', function () { return y(0); })
       .attr('height', function (d) { return y(0) - y(d.out); });
 
+  // append outflow bar labels
   var outLabels = svg.selectAll('g').selectAll('.bar-label.out')
     .data(function (d) {
       return currentData[d];
@@ -166,6 +167,21 @@ function updateChart() {
       .attr('x', function (d) { return x(d.label) + (x.bandwidth() / 2); })
       .attr('y', function (d) { return y(-d.out) + 15; });
 
+  // append net bar labels
+
+  var netLabels = svg.selectAll('g').selectAll('.bar-label.net')
+    .data(function (d) {
+      return currentData[d];
+    });
+
+  netLabels.enter()
+    .append('text')
+      .attr('class', function (d) { return 'bar-label net ' + d.label; })
+      .attr('text-anchor', 'middle')
+      .text(function (d) { return 'Δ ' + numeral(d.in - d.out).format('0.0a'); })
+    .merge(outLabels)
+      .attr('x', function (d) { return x(d.label) + (x.bandwidth() / 2); })
+      .attr('y', function (d) { return y(-d.out) + 35; });
 
   // draw trendlines
   var trendlines = svg.selectAll('path')
@@ -181,13 +197,13 @@ function updateChart() {
     .attr('d', line);
 
   // append net migration dots
-  var nets = svg.selectAll('g').selectAll('.net')
+  var circles = svg.selectAll('g').selectAll('circle')
     .data(function (d) { return currentData[d]; });
 
-  nets.enter()
+  circles.enter()
     .append('circle')
       .attr('class', 'net')
-    .merge(nets)
+    .merge(circles)
       .attr('cy', function (d) {
         var net = d.in - d.out;
         return y(net);

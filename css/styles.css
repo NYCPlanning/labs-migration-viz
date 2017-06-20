@@ -19,24 +19,29 @@ svg {
   cursor: pointer;
 }
 
-.bar.selected {
-  opacity: 1;
-}
-
 .bar-label {
   opacity: 0;
+}
+
+.bar-label.net {
+  fill: #959595;
+  opacity: 0
 }
 
 .bar-label.selected {
   opacity: 1;
 }
 
-.net.selected {
+.bar.selected {
+  opacity: 1;
+}
+
+circle.selected {
  fill: #FFF;
  opacity: 1;
 }
 
-.net {
+circle {
   opacity: 0.2;
 }
 
