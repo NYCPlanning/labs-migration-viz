@@ -37,7 +37,7 @@ function highlightBars(highlightData) {
     });
 
   // update cohort label
-  $('#cohort-label').text(highlightCohort);
+  $('#cohort-label').text('Age ' + highlightCohort);
 }
 
 function updateChart() {
@@ -79,11 +79,11 @@ function updateChart() {
 
   svg.selectAll('.in-label')
     .attr('x', 20)
-    .attr('y', y(0) + margin.top - 10);
+    .attr('y', y(yMax) + margin.top - 10);
 
   svg.selectAll('.out-label')
     .attr('x', 20)
-    .attr('y', y(0) + margin.top + 20);
+    .attr('y', y(yMin) + margin.top + 20);
 
   svg.selectAll('line')
     .attr('class', 'center-axis')
@@ -179,7 +179,7 @@ function updateChart() {
       .attr('class', function (d) { return 'bar-label net ' + d.label; })
       .attr('text-anchor', 'middle')
       .text(function (d) { return 'Δ ' + numeral(d.in - d.out).format('0.0a'); })
-    .merge(outLabels)
+    .merge(netLabels)
       .attr('x', function (d) { return x(d.label) + (x.bandwidth() / 2); })
       .attr('y', function (d) { return y(-d.out) + 35; });
 
@@ -220,14 +220,15 @@ function initializeChart() {
   svg.append('line');
 
   svg.append('text')
-    .attr('class', 'in-label')
-    .text('IN');
+    .attr('class', 'in-label in')
+    .text('IN-MIGRATION');
 
   svg.append('text')
-    .attr('class', 'out-label')
-    .text('OUT');
+    .attr('class', 'out-label out')
+    .text('OUT-MIGRATION');
 
   updateChart();
+  highlightBars({ label: 'Under 10' }); // set initial highlight
 }
 
 // get the data
