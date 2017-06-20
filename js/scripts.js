@@ -21,6 +21,14 @@ function highlightBars(highlightData) {
       return d.label === highlightCohort;
     });
 
+  // add selected class to all bar labels with this label
+  svg
+    .selectAll('g')
+    .selectAll('.bar-label')
+    .classed('selected', function (d) {
+      return d.label === highlightCohort;
+    });
+
   // add selected class to all trendlines with this label
   svg
     .selectAll('.trendline')
@@ -29,7 +37,7 @@ function highlightBars(highlightData) {
     });
 
   // update cohort label
-  $('#cohort-label').text(highlightCohort)
+  $('#cohort-label').text(highlightCohort);
 }
 
 function updateChart() {
@@ -113,6 +121,23 @@ function updateChart() {
       .attr('y', function (d) { return y(d.in); })
       .attr('height', function (d) { return y(0) - y(d.in); });
 
+  // append inflow labels
+
+  var inLabels = svg.selectAll('g').selectAll('.bar-label.in')
+    .data(function (d) {
+      return currentData[d];
+    });
+
+  inLabels.enter()
+    .append('text')
+      .attr('class', function (d) { return 'bar-label in ' + d.label; })
+      .attr('text-anchor', 'middle')
+      .text(function (d) { return numeral(d.in).format('0.0a'); })
+    .merge(inLabels)
+      .attr('x', function (d) { return x(d.label) + (x.bandwidth() / 2); })
+      .attr('y', function (d) { return y(d.in) - 5; });
+
+
   // append the outflow rectangles
   var outs = svg.selectAll('g').selectAll('.out')
     .data(function (d) { return currentData[d]; });
@@ -126,6 +151,21 @@ function updateChart() {
       .attr('width', x.bandwidth())
       .attr('y', function () { return y(0); })
       .attr('height', function (d) { return y(0) - y(d.out); });
+
+  var outLabels = svg.selectAll('g').selectAll('.bar-label.out')
+    .data(function (d) {
+      return currentData[d];
+    });
+
+  outLabels.enter()
+    .append('text')
+      .attr('class', function (d) { return 'bar-label out ' + d.label; })
+      .attr('text-anchor', 'middle')
+      .text(function (d) { return numeral(d.out).format('0.0a'); })
+    .merge(outLabels)
+      .attr('x', function (d) { return x(d.label) + (x.bandwidth() / 2); })
+      .attr('y', function (d) { return y(-d.out) + 15; });
+
 
   // draw trendlines
   var trendlines = svg.selectAll('path')

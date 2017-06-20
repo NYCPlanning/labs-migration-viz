@@ -23,10 +23,18 @@ svg {
   opacity: 1;
 }
 
- .net.selected {
-   fill: #FFF;
-   opacity: 1;
- }
+.bar-label {
+  opacity: 0;
+}
+
+.bar-label.selected {
+  opacity: 1;
+}
+
+.net.selected {
+ fill: #FFF;
+ opacity: 1;
+}
 
 .net {
   opacity: 0.2;
