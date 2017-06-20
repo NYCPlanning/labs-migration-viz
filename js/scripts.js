@@ -39,7 +39,7 @@ function updateChart() {
   var yMax = 400000;
 
   // set the dimensions and margins of the graph
-  var margin = { top: 20, right: 10, bottom: 30, left: 10 };
+  var margin = { top: 20, right: 10, bottom: 20, left: 10 };
   var width = clientRect.width;
   var height = clientRect.height;
 
@@ -138,11 +138,6 @@ function updateChart() {
     .datum(function (d) {
       return lineChartData[d];
     })
-    .attr('fill', 'none')
-    .attr('stroke', 'steelblue')
-    .attr('stroke-linejoin', 'round')
-    .attr('stroke-linecap', 'round')
-    .attr('stroke-width', 1.5)
     .attr('d', line);
 
   // append net migration dots
