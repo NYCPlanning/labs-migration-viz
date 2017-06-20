@@ -71,12 +71,24 @@ svg {
   font-weight: 200;
 }
 
+.in-label, .out-label {
+  fill: #848484;
+}
+
 .year-label-row {
   position: absolute;
   bottom: 0;
   left: 15px;
   right: 15px;
   padding-bottom: 5px;
+}
+
+#cohort-label {
+  position: absolute;
+  font-size: 36px;
+  color: #898989;
+  font-weight: 200;
+  padding: 20px 10px;
 }
 
 /*Common DCP Navbar*/

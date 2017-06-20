@@ -27,6 +27,9 @@ function highlightBars(highlightData) {
     .classed('selected', function (d) {
       return d[0].label === highlightCohort;
     });
+
+  // update cohort label
+  $('#cohort-label').text(highlightCohort)
 }
 
 function updateChart() {
@@ -55,16 +58,24 @@ function updateChart() {
   // local y scale
   var y = d3.scaleLinear()
     .domain([yMin, yMax])
-    .range([height, 0]);
+    .range([height * 0.75, height * 0.25]);
 
   var line = d3.line()
     .x(function (d) { return outerX(d.year_range) + x(d.label) + margin.left + margin.right; })
     .y(function (d) { return y(d.net) + margin.top; })
     .curve(d3.curveCardinal);
 
-  // add main svg element
+
   svg.attr('width', width)
     .attr('height', height);
+
+  svg.selectAll('.in-label')
+    .attr('x', 20)
+    .attr('y', y(0) + margin.top - 10);
+
+  svg.selectAll('.out-label')
+    .attr('x', 20)
+    .attr('y', y(0) + margin.top + 20);
 
   svg.selectAll('line')
     .attr('class', 'center-axis')
@@ -156,6 +167,15 @@ function initializeChart() {
   svg = d3.select('.chart-container').append('svg');
 
   svg.append('line');
+
+  svg.append('text')
+    .attr('class', 'in-label')
+    .text('IN');
+
+  svg.append('text')
+    .attr('class', 'out-label')
+    .text('OUT');
+
   updateChart();
 }
 
