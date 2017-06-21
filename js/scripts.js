@@ -261,4 +261,8 @@ d3.json('data/age.json', function (error, data) {
   initializeChart();
 });
 
+d3.csv('data/historic_migration_selchars.csv', function(data) {
+  console.log(data);
+});
+
 window.addEventListener('resize', updateChart);

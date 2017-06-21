@@ -85,7 +85,11 @@ circle {
   float:left;
   font-size: 25px;
   color: #848484;
-  font-weight: 200;
+  font-weight: 400;
+}
+
+.year-label:not(:last-child) {
+  border-right: 1px solid #9e9595;
 }
 
 .year-label-row {
@@ -93,7 +97,7 @@ circle {
   bottom: 0;
   left: 15px;
   right: 15px;
-  padding-bottom: 5px;
+  line-height: 48px;
 }
 
 #cohort-label {
