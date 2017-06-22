@@ -1,8 +1,17 @@
-var svg;
-var currentData = {};
+var selectedCharacteristic = 'age';
 var lineChartData = {};
+var yearRangeStrings = [
+  '1935_1940',
+  '1975_1980',
+  '1985_1990',
+  '1995_2000',
+  '1995_2000',
+  '2010_2014'
+];
+
 
 function highlightBars(highlightData) {
+  var svg = d3.select('svg');
   var highlightCohort = highlightData.group;
 
   // add selected class to all bars with this label
@@ -40,33 +49,47 @@ function highlightBars(highlightData) {
   $('#cohort-label').text('Age ' + highlightCohort);
 }
 
-function updateChart() {
+function clearChart() {
+  d3.selectAll('svg > g').remove();
+  d3.selectAll('svg > path').remove();
+}
+
+function updateChart(barData, lineData) {
+  var svg = d3.select('svg');
   var clientRect = d3.select('body').node().getBoundingClientRect();
 
-  var yMin = -400000;
-  var yMax = 400000;
+  // get maximum absolute value from the data
+  var max = d3.max(
+    Object.keys(barData).map(function (key) {
+      return d3.max(barData[key], function (d) { return Math.max(d.in, d.out); });
+    })
+  );
+
+
+  var yMin = -max;
+  var yMax = max;
 
   // set the dimensions and margins of the graph
   var margin = { top: 20, right: 10, bottom: 20, left: 10 };
   var width = clientRect.width;
-  var height = clientRect.height;
+  var height = 350;
 
   // x scale to render each chart across the same axis
   var outerX = d3.scaleBand()
-    .domain(Object.keys(currentData))
+    .domain(Object.keys(barData))
     .range([0, width])
     .padding(0.1);
 
   // local x scale
   var x = d3.scaleBand()
-    .domain(currentData['1935_1940'].map(function (d) { return d.group; }))
+    .domain(barData['1935_1940'].map(function (d) { return d.group; }))
     .range([0, width / 6])
     .padding(0.1);
 
   // local y scale
   var y = d3.scaleLinear()
     .domain([yMin, yMax])
-    .range([height * 0.75, height * 0.25]);
+    .range([height, 0]);
 
   var line = d3.line()
     .x(function (d) { return outerX(d.year_range) + x(d.group) + margin.left + margin.right; })
@@ -79,11 +102,11 @@ function updateChart() {
 
   svg.selectAll('.in-label')
     .attr('x', 20)
-    .attr('y', y(yMax) + margin.top - 10);
+    .attr('y', margin.top);
 
   svg.selectAll('.out-label')
     .attr('x', 20)
-    .attr('y', y(yMin) + margin.top + 20);
+    .attr('y', height);
 
   svg.selectAll('line')
     .attr('class', 'center-axis')
@@ -95,7 +118,7 @@ function updateChart() {
 
   // add g elements for each chart, offset by outerX scale
   var g = svg.selectAll('g')
-    .data(Object.keys(currentData));
+    .data(Object.keys(barData));
 
   g.enter()
     .append('g')
@@ -108,7 +131,7 @@ function updateChart() {
   // append the inflow rectangles
   var ins = svg.selectAll('g').selectAll('.in')
     .data(function (d) {
-      return currentData[d];
+      return barData[d];
     });
 
   ins.enter()
@@ -122,10 +145,9 @@ function updateChart() {
       .attr('height', function (d) { return y(0) - y(d.in); });
 
   // append inflow labels
-
   var inLabels = svg.selectAll('g').selectAll('.bar-label.in')
     .data(function (d) {
-      return currentData[d];
+      return barData[d];
     });
 
   inLabels.enter()
@@ -140,7 +162,7 @@ function updateChart() {
 
   // append the outflow rectangles
   var outs = svg.selectAll('g').selectAll('.out')
-    .data(function (d) { return currentData[d]; });
+    .data(function (d) { return barData[d]; });
 
   outs.enter()
     .append('rect')
@@ -155,7 +177,7 @@ function updateChart() {
   // append outflow bar labels
   var outLabels = svg.selectAll('g').selectAll('.bar-label.out')
     .data(function (d) {
-      return currentData[d];
+      return barData[d];
     });
 
   outLabels.enter()
@@ -168,10 +190,9 @@ function updateChart() {
       .attr('y', function (d) { return y(-d.out) + 15; });
 
   // append net bar labels
-
   var netLabels = svg.selectAll('g').selectAll('.bar-label.net')
     .data(function (d) {
-      return currentData[d];
+      return barData[d];
     });
 
   netLabels.enter()
@@ -185,20 +206,20 @@ function updateChart() {
 
   // draw trendlines
   var trendlines = svg.selectAll('path')
-    .data(Object.keys(lineChartData));
+    .data(Object.keys(lineData));
 
   trendlines.enter()
     .append('path')
     .attr('class', 'trendline')
     .merge(trendlines)
     .datum(function (d) {
-      return lineChartData[d];
+      return lineData[d];
     })
     .attr('d', line);
 
   // append net migration dots
   var circles = svg.selectAll('g').selectAll('circle')
-    .data(function (d) { return currentData[d]; });
+    .data(function (d) { return barData[d]; });
 
   circles.enter()
     .append('circle')
@@ -213,9 +234,9 @@ function updateChart() {
       .attr('fill', 'black');
 }
 
-function initializeChart() {
+function initializeChart(barData, lineData) {
   // add main svg element
-  svg = d3.select('.chart-container').append('svg');
+  var svg = d3.select('.chart-container').append('svg');
 
   svg.append('line');
 
@@ -227,52 +248,42 @@ function initializeChart() {
     .attr('class', 'out-label out')
     .text('OUT-MIGRATION');
 
-  updateChart();
-  highlightBars({ group: 'Under 10' }); // set initial highlight
+  updateChart(barData, lineData);
 }
 
-function getLineChartData(d) {
-  var numBands = d[Object.keys(d)[0]].length;
-  var newData = {};
+function getLineData(rawData, characteristic, yearRangeStrings) {
+  var filteredData = _(rawData).filter(function (d) {
+    return d.characteristic === characteristic;
+  });
 
-  for (var i = 0; i < numBands; i += 1) {
-  // for (var i = 0; i < 1; i += 1) {
-    var group = d[Object.keys(d)[0]][i].group;
-
+  var lineData = {};
+  for (var i = 0; i < filteredData.length; i += 1) {
+    var thisRow = filteredData[i];
+    var group = thisRow.group;
     var points = [];
-    Object.keys(d).forEach(function (key) { // eslint-disable-line
-      var net = d[key][i].in - d[key][i].out;
-
+    // iterate over yearRangeStrings and build point data
+    yearRangeStrings.forEach(function (yearRangeString) {
       points.push({
         group: group,
-        year_range: key,
-        net: net
+        year_range: yearRangeString,
+        net: thisRow[yearRangeString + '_in'] - thisRow[yearRangeString + '_out']
       });
-
-      newData[group] = points;
     });
+    lineData[group] = points;
   }
 
-  return newData;
+  return lineData;
 }
 
-d3.csv('data/historic_migration_selchars.csv', function (data) {
-  console.log(data);
+function getBarData(rawData, characteristic, yearRangeStrings) {
+  var filteredData = _(rawData).filter(function (d) {
+    return d.characteristic === characteristic;
+  });
 
-  var ageData = _(data).filter(function(d) { return d.characteristic === 'age'; })
-
-  var yearRangeStrings = [
-    '1935_1940',
-    '1975_1980',
-    '1985_1990',
-    '1995_2000',
-    '1995_2000',
-    '2010_2014'
-  ];
-
+  var barData = {};
   yearRangeStrings.forEach(function (yearRangeString) {
     // create array of objects
-    currentData[yearRangeString] = ageData.map(function (d) {
+    barData[yearRangeString] = filteredData.map(function (d) {
       return {
         group: d.group,
         in: d[yearRangeString + '_in'],
@@ -281,9 +292,30 @@ d3.csv('data/historic_migration_selchars.csv', function (data) {
     });
   });
 
-  lineChartData = getLineChartData(currentData);
-  console.log(lineChartData);
-  initializeChart();
-});
+  return barData;
+}
 
-window.addEventListener('resize', updateChart);
+//  kick things off by downloading the csv
+d3.csv('data/historic_migration_selchars.csv', function (data) {
+  var barData = getBarData(data, selectedCharacteristic, yearRangeStrings);
+  var lineData = getLineData(data, selectedCharacteristic, yearRangeStrings);
+  initializeChart(barData, lineData);
+
+  window.addEventListener('resize', function () { updateChart(barData, lineData); });
+
+  // change the selected characteristic when the user clicks a button
+  $('.char-select>button').click(function () {
+    selectedCharacteristic = $(this)[0].id;
+    $(this).siblings().removeClass('active');
+    $(this).addClass('active');
+
+    var newBarData = getBarData(data, selectedCharacteristic, yearRangeStrings);
+    var newLineData = getLineData(data, selectedCharacteristic, yearRangeStrings);
+    clearChart();
+
+    window.removeEventListener('resize');
+    window.addEventListener('resize', function () { updateChart(barData, lineData); });
+
+    updateChart(newBarData, newLineData);
+  });
+});

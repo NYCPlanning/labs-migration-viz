@@ -108,6 +108,20 @@ circle {
   padding: 10px 0;
 }
 
+.meta p {
+  font-size: 12px;
+}
+
+p.header-label {
+  color: #d96b27;
+  text-transform: uppercase;
+  font-weight: 600;
+  font-size: 8px;
+  margin: 10px 0;
+  margin-bottom: -8px;
+  letter-spacing: 1.2px;
+}
+
 /*Common DCP Navbar*/
 .navbar-collapse.collapsing, .navbar-collapse.in, .navbar-default {
   background-color: hsla(0,0%,100%,.94);
