@@ -10,16 +10,17 @@ var yearRangeStrings = [
 ];
 
 
-function highlightBars(highlightData) {
+function highlight(highlightData) {
   var svg = d3.select('svg');
   var highlightCohort = highlightData.group;
+
 
   // add selected class to all bars with this label
   svg
     .selectAll('g')
     .selectAll('.bar')
-    .classed('selected', function (d) {
-      return d.group === highlightCohort;
+    .classed('subdued', function (d) {
+      return d.group !== highlightCohort;
     });
 
   // add selected class to all net circles with this label
@@ -47,6 +48,16 @@ function highlightBars(highlightData) {
 
   // update cohort label
   $('#cohort-label').text('Age ' + highlightCohort);
+}
+
+function unHighlight() {
+  var svg = d3.select('svg');
+  svg
+    .selectAll('.selected')
+    .classed('selected', false);
+  svg
+    .selectAll('.subdued')
+    .classed('subdued', false);
 }
 
 function clearChart() {
@@ -137,7 +148,8 @@ function updateChart(barData, lineData) {
   ins.enter()
     .append('rect')
       .attr('class', function (d) { return 'bar in ' + d.group; })
-      .on('mouseenter', highlightBars)
+      .on('mouseover', highlight)
+      .on('mouseout', unHighlight)
     .merge(ins)
       .attr('x', function (d) { return x(d.group); })
       .attr('width', x.bandwidth())
@@ -167,7 +179,8 @@ function updateChart(barData, lineData) {
   outs.enter()
     .append('rect')
       .attr('class', 'bar out')
-      .on('mouseenter', highlightBars)
+      .on('mouseover', highlight)
+      .on('mouseout', unHighlight)
     .merge(outs)
       .attr('x', function (d) { return x(d.group); })
       .attr('width', x.bandwidth())
@@ -313,7 +326,7 @@ d3.csv('data/historic_migration_selchars.csv', function (data) {
     var newLineData = getLineData(data, selectedCharacteristic, yearRangeStrings);
     clearChart();
 
-    window.removeEventListener('resize');
+    window.removeEventListener('resize', function() {});
     window.addEventListener('resize', function () { updateChart(barData, lineData); });
 
     updateChart(newBarData, newLineData);
