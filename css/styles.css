@@ -13,6 +13,7 @@ svg {
 
 .bar {
   opacity: 1;
+  transition-delay: 0.5s;
   transition: opacity .1s ease-in-out;
 }
 
@@ -47,10 +48,12 @@ circle.selected {
 }
 
 circle {
+  pointer-events: none;
   opacity: 0.2;
 }
 
 .trendline {
+  pointer-events: none;
   display: none;
   fill: none;
   stroke: #3a7c99;

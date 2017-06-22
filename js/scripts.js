@@ -51,6 +51,7 @@ function highlight(highlightData) {
 }
 
 function unHighlight() {
+  console.log('unHighlight')
   var svg = d3.select('svg');
   svg
     .selectAll('.selected')
@@ -75,7 +76,6 @@ function updateChart(barData, lineData) {
       return d3.max(barData[key], function (d) { return Math.max(d.in, d.out); });
     })
   );
-
 
   var yMin = -max;
   var yMax = max;
