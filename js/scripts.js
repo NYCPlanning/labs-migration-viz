@@ -1,16 +1,16 @@
 var svg;
-var currentData;
+var currentData = {};
 var lineChartData = {};
 
 function highlightBars(highlightData) {
-  var highlightCohort = highlightData.label;
+  var highlightCohort = highlightData.group;
 
   // add selected class to all bars with this label
   svg
     .selectAll('g')
     .selectAll('.bar')
     .classed('selected', function (d) {
-      return d.label === highlightCohort;
+      return d.group === highlightCohort;
     });
 
   // add selected class to all net circles with this label
@@ -18,7 +18,7 @@ function highlightBars(highlightData) {
     .selectAll('g')
     .selectAll('.net')
     .classed('selected', function (d) {
-      return d.label === highlightCohort;
+      return d.group === highlightCohort;
     });
 
   // add selected class to all bar labels with this label
@@ -26,14 +26,14 @@ function highlightBars(highlightData) {
     .selectAll('g')
     .selectAll('.bar-label')
     .classed('selected', function (d) {
-      return d.label === highlightCohort;
+      return d.group === highlightCohort;
     });
 
   // add selected class to all trendlines with this label
   svg
     .selectAll('.trendline')
     .classed('selected', function (d) {
-      return d[0].label === highlightCohort;
+      return d[0].group === highlightCohort;
     });
 
   // update cohort label
@@ -59,7 +59,7 @@ function updateChart() {
 
   // local x scale
   var x = d3.scaleBand()
-    .domain(currentData['1935_1940'].map(function (d) { return d.label; }))
+    .domain(currentData['1935_1940'].map(function (d) { return d.group; }))
     .range([0, width / 6])
     .padding(0.1);
 
@@ -69,7 +69,7 @@ function updateChart() {
     .range([height * 0.75, height * 0.25]);
 
   var line = d3.line()
-    .x(function (d) { return outerX(d.year_range) + x(d.label) + margin.left + margin.right; })
+    .x(function (d) { return outerX(d.year_range) + x(d.group) + margin.left + margin.right; })
     .y(function (d) { return y(d.net) + margin.top; })
     .curve(d3.curveCardinal);
 
@@ -113,10 +113,10 @@ function updateChart() {
 
   ins.enter()
     .append('rect')
-      .attr('class', function (d) { return 'bar in ' + d.label; })
+      .attr('class', function (d) { return 'bar in ' + d.group; })
       .on('mouseenter', highlightBars)
     .merge(ins)
-      .attr('x', function (d) { return x(d.label); })
+      .attr('x', function (d) { return x(d.group); })
       .attr('width', x.bandwidth())
       .attr('y', function (d) { return y(d.in); })
       .attr('height', function (d) { return y(0) - y(d.in); });
@@ -130,11 +130,11 @@ function updateChart() {
 
   inLabels.enter()
     .append('text')
-      .attr('class', function (d) { return 'bar-label in ' + d.label; })
+      .attr('class', function (d) { return 'bar-label in ' + d.group; })
       .attr('text-anchor', 'middle')
       .text(function (d) { return numeral(d.in).format('0.0a'); })
     .merge(inLabels)
-      .attr('x', function (d) { return x(d.label) + (x.bandwidth() / 2); })
+      .attr('x', function (d) { return x(d.group) + (x.bandwidth() / 2); })
       .attr('y', function (d) { return y(d.in) - 5; });
 
 
@@ -147,7 +147,7 @@ function updateChart() {
       .attr('class', 'bar out')
       .on('mouseenter', highlightBars)
     .merge(outs)
-      .attr('x', function (d) { return x(d.label); })
+      .attr('x', function (d) { return x(d.group); })
       .attr('width', x.bandwidth())
       .attr('y', function () { return y(0); })
       .attr('height', function (d) { return y(0) - y(d.out); });
@@ -160,11 +160,11 @@ function updateChart() {
 
   outLabels.enter()
     .append('text')
-      .attr('class', function (d) { return 'bar-label out ' + d.label; })
+      .attr('class', function (d) { return 'bar-label out ' + d.group; })
       .attr('text-anchor', 'middle')
       .text(function (d) { return numeral(d.out).format('0.0a'); })
     .merge(outLabels)
-      .attr('x', function (d) { return x(d.label) + (x.bandwidth() / 2); })
+      .attr('x', function (d) { return x(d.group) + (x.bandwidth() / 2); })
       .attr('y', function (d) { return y(-d.out) + 15; });
 
   // append net bar labels
@@ -176,11 +176,11 @@ function updateChart() {
 
   netLabels.enter()
     .append('text')
-      .attr('class', function (d) { return 'bar-label net ' + d.label; })
+      .attr('class', function (d) { return 'bar-label net ' + d.group; })
       .attr('text-anchor', 'middle')
       .text(function (d) { return 'Δ ' + numeral(d.in - d.out).format('0.0a'); })
     .merge(netLabels)
-      .attr('x', function (d) { return x(d.label) + (x.bandwidth() / 2); })
+      .attr('x', function (d) { return x(d.group) + (x.bandwidth() / 2); })
       .attr('y', function (d) { return y(-d.out) + 35; });
 
   // draw trendlines
@@ -208,7 +208,7 @@ function updateChart() {
         var net = d.in - d.out;
         return y(net);
       })
-      .attr('cx', function (d) { return x(d.label) + (x.bandwidth() / 2); })
+      .attr('cx', function (d) { return x(d.group) + (x.bandwidth() / 2); })
       .attr('r', 3)
       .attr('fill', 'black');
 }
@@ -228,41 +228,62 @@ function initializeChart() {
     .text('OUT-MIGRATION');
 
   updateChart();
-  highlightBars({ label: 'Under 10' }); // set initial highlight
+  highlightBars({ group: 'Under 10' }); // set initial highlight
 }
 
-// get the data
-d3.json('data/age.json', function (error, data) {
-  if (error) throw error;
-
-  currentData = data;
-  // prep data by cohort for line chart
-  // get number of bands
-  var numBands = currentData[Object.keys(currentData)[0]].length;
+function getLineChartData(d) {
+  var numBands = d[Object.keys(d)[0]].length;
+  var newData = {};
 
   for (var i = 0; i < numBands; i += 1) {
   // for (var i = 0; i < 1; i += 1) {
-    var label = currentData[Object.keys(currentData)[0]][i].label;
+    var group = d[Object.keys(d)[0]][i].group;
 
     var points = [];
-    Object.keys(currentData).forEach(function (key) { // eslint-disable-line
-      var net = currentData[key][i].in - currentData[key][i].out;
+    Object.keys(d).forEach(function (key) { // eslint-disable-line
+      var net = d[key][i].in - d[key][i].out;
 
       points.push({
-        label: label,
+        group: group,
         year_range: key,
         net: net
       });
 
-      lineChartData[label] = points;
+      newData[group] = points;
     });
   }
 
-  initializeChart();
-});
+  return newData;
+}
 
-d3.csv('data/historic_migration_selchars.csv', function(data) {
+d3.csv('data/historic_migration_selchars.csv', function (data) {
   console.log(data);
+
+  var ageData = _(data).filter(function(d) { return d.characteristic === 'age'; })
+
+  var yearRangeStrings = [
+    '1935_1940',
+    '1975_1980',
+    '1985_1990',
+    '1995_2000',
+    '1995_2000',
+    '2010_2014'
+  ];
+
+  yearRangeStrings.forEach(function (yearRangeString) {
+    // create array of objects
+    currentData[yearRangeString] = ageData.map(function (d) {
+      return {
+        group: d.group,
+        in: d[yearRangeString + '_in'],
+        out: d[yearRangeString + '_out']
+      };
+    });
+  });
+
+  lineChartData = getLineChartData(currentData);
+  console.log(lineChartData);
+  initializeChart();
 });
 
 window.addEventListener('resize', updateChart);
