@@ -13,8 +13,6 @@ function highlight(highlightData) {
   var svg = d3.select('svg');
   var legendItems = d3.selectAll('.legend-item');
   var highlightCohort = highlightData.group;
-
-
   svg
     .selectAll('g > .bar, g > circle')
     .classed('subdued', function (d) {
@@ -54,8 +52,36 @@ function highlight(highlightData) {
       return d[0].group === highlightCohort;
     });
 
-  // update cohort label
-  $('#cohort-label').text('Age ' + highlightCohort);
+  // update text area
+  $('#char-display-name').text(characteristics[selectedCharacteristic].displayName + ' - ' + highlightData.group);
+
+  var yearRange = highlightData.year_range.split('_').join(' and ');
+  var direction = (highlightData.in > highlightData.out) ? '<span class="in">net gain' : '<span class="out">net loss';
+  var net = Math.abs(highlightData.in - highlightData.out);
+
+  $('#char-about').html(
+    'Between '
+      + yearRange
+      + ', <span class="in">'
+      + numeral(highlightData.in).format('0,0')
+      + ' '
+      + characteristics[selectedCharacteristic].descriptor
+      + ' '
+      + highlightData.group
+      + ' moved to NYC</span>, while <span class="out">'
+      + numeral(highlightData.out).format('0,0')
+      + ' moved out</span>. This resulted in the city\'s '
+      + direction + ' of '
+      + numeral(net).format('0,0')
+      + '</span> in this group due to migration.'
+  );
+}
+
+// update the about text
+function updateTextArea(characteristic) {
+  var thisCharacteristic = characteristics[characteristic];
+  $('#char-display-name').text(thisCharacteristic.displayName);
+  $('#char-about').text(thisCharacteristic.about);
 }
 
 function unHighlight() {
@@ -64,6 +90,8 @@ function unHighlight() {
 
   d3.selectAll('.subdued')
     .classed('subdued', false);
+
+  updateTextArea(selectedCharacteristic);
 }
 
 function clearChart() {
@@ -115,7 +143,9 @@ function updateChart() {
   var getColor = chroma.scale(characteristics[selectedCharacteristic].colors);
 
   var line = d3.line()
-    .x(function (d) { return outerX(d.year_range) + x(d.group) + (x.bandwidth() / 2) + margin.left; })
+    .x(function (d) {
+      return outerX(d.year_range) + x(d.group) + (x.bandwidth() / 2) + margin.left;
+    })
     .y(function (d) { return y(d.net) + margin.top; })
     .curve(d3.curveCardinal);
 
@@ -166,9 +196,7 @@ function updateChart() {
 
   // append the inflow rectangles
   var ins = svg.selectAll('g').selectAll('.in')
-    .data(function (d) {
-      return barData[d];
-    });
+    .data(function (d) { return barData[d]; });
 
   ins.enter()
     .append('rect')
@@ -330,23 +358,13 @@ function getBarData(rawData, characteristic, yearRangeStrings) { // eslint-disab
       return {
         group: d.group,
         in: d[yearRangeString + '_in'],
-        out: d[yearRangeString + '_out']
+        out: d[yearRangeString + '_out'],
+        year_range: yearRangeString
       };
     });
   });
 
   return newBarData;
-}
-
-// update the about text
-function updateTextArea(characteristic) {
-  var thisCharacteristic = characteristics[characteristic];
-  $('#char-display-name').text(thisCharacteristic.displayName);
-  $('#char-about').text(thisCharacteristic.about);
-}
-
-function updateLegendArea(characteristic) {
-
 }
 
 Object.keys(characteristics).forEach(function (d) {
@@ -360,12 +378,10 @@ Object.keys(characteristics).forEach(function (d) {
 
 //  kick things off by downloading the csv
 d3.csv('data/historic_migration_selchars.csv', function (data) {
-  console.log(data)
   initializeChart();
 
   // change the selected characteristic when the user clicks a button
   $('.char-select>button').click(function () {
-    console.log('click')
     selectedCharacteristic = $(this)[0].id;
     $(this).siblings().removeClass('active');
     $(this).addClass('active');
@@ -374,7 +390,6 @@ d3.csv('data/historic_migration_selchars.csv', function (data) {
     lineData = getLineData(data, selectedCharacteristic, yearRangeStrings);
 
     updateTextArea(selectedCharacteristic);
-    updateLegendArea(selectedCharacteristic);
 
     clearChart();
     updateChart();
