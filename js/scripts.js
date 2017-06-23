@@ -322,7 +322,11 @@ function updateTextArea(characteristic) {
 }
 
 Object.keys(characteristics).forEach(function (d) {
-  $('.char-select').append('<button id="' + d + '" class="btn btn-default btn-xs">' + characteristics[d].displayName + '</button>');
+  d3.select('.char-select')
+    .append('button')
+    .attr('id', d)
+    .attr('class', 'btn btn-default btn-xs')
+    .text(characteristics[d].displayName);
 });
 
 
