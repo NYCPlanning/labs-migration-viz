@@ -170,7 +170,6 @@ function updateChart() {
 
   // end legend
 
-
   svg.attr('width', width)
     .attr('height', height);
 
@@ -180,7 +179,7 @@ function updateChart() {
 
   svg.selectAll('.out-label')
     .attr('x', 20)
-    .attr('y', height);
+    .attr('y', height - margin.bottom);
 
   // add g elements for each chart, offset by outerX scale
   var g = svg.selectAll('g')
