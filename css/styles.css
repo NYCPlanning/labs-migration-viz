@@ -58,11 +58,11 @@ circle {
   pointer-events: none;
   display: none;
   fill: none;
-  stroke: #d96b27;
+  stroke: #000;
   stroke-linejoin: round;
   stroke-linecap: round;
   stroke-width: 2px;
-  stroke-dasharray: 1 3;
+  stroke-dasharray: 11 6;
 }
 
 .trendline.selected {

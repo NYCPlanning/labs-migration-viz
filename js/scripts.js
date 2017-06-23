@@ -117,7 +117,7 @@ function updateChart() {
   // set the dimensions and margins of the graph
   var margin = { top: 20, right: 10, bottom: 20, left: 10 };
   var width = clientRect.width;
-  var height = 350;
+  var height = 450;
 
   // x scale to render each chart across the same axis
   var outerX = d3.scaleBand()
@@ -136,7 +136,7 @@ function updateChart() {
     .domain([yMin, yMax])
     .range([height - 40, 40]);
 
-  var z = d3.scaleBand()
+  var z = d3.scalePoint()
     .domain(barData['1935_1940'].map(function (d) { return d.group; }))
     .range([0, 1]);
 
@@ -161,6 +161,7 @@ function updateChart() {
   legendItems.append('div')
     .attr('class', 'legend-color-box')
     .attr('style', function (d) {
+      console.log(z(d.group));
       return 'background: ' + getColor(z(d.group));
     });
 
@@ -175,11 +176,11 @@ function updateChart() {
 
   svg.selectAll('.in-label')
     .attr('x', 20)
-    .attr('y', margin.top);
+    .attr('y', margin.top + 100);
 
   svg.selectAll('.out-label')
     .attr('x', 20)
-    .attr('y', height - margin.bottom);
+    .attr('y', height - margin.bottom - 50);
 
   // add g elements for each chart, offset by outerX scale
   var g = svg.selectAll('g')
@@ -294,7 +295,7 @@ function updateChart() {
         return y(net);
       })
       .attr('cx', function (d) { return x(d.group) + (x.bandwidth() / 2); })
-      .attr('r', 3);
+      .attr('r', 5);
 
   // draw trendlines
   var trendlines = svg.selectAll('path')
