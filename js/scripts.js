@@ -110,7 +110,7 @@ function updateChart() {
     .domain(barData['1935_1940'].map(function (d) { return d.group; }))
     .range([0, 1]);
 
-  var getColor = chroma.scale(['#deebf7', '#9ecae1', '#3182bd']);
+  var getColor = chroma.scale(characteristics[selectedCharacteristic].colors);
 
   var line = d3.line()
     .x(function (d) { return outerX(d.year_range) + x(d.group) + (x.bandwidth() / 2) + margin.left; })
@@ -321,12 +321,19 @@ function updateTextArea(characteristic) {
   $('#char-about').text(thisCharacteristic.about);
 }
 
+Object.keys(characteristics).forEach(function (d) {
+  $('.char-select').append('<button id="' + d + '" class="btn btn-default btn-xs">' + characteristics[d].displayName + '</button>');
+});
+
+
 //  kick things off by downloading the csv
 d3.csv('data/historic_migration_selchars.csv', function (data) {
+  console.log(data)
   initializeChart();
 
   // change the selected characteristic when the user clicks a button
   $('.char-select>button').click(function () {
+    console.log('click')
     selectedCharacteristic = $(this)[0].id;
     $(this).siblings().removeClass('active');
     $(this).addClass('active');
