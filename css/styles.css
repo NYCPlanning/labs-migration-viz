@@ -225,3 +225,18 @@ ul.navbar-right {
 }
 
 /*End Common DCP Navbar*/
+
+/*Common DCP Footer*/
+.footer {
+  background: #ececec;
+  padding-top: 56px;
+  padding-bottom: 56px;
+  font-size: 14px;
+  font-weight: 400;
+}
+
+.footer .copyright {
+  font-size: 11px;
+  margin-bottom: 0;
+}
+/*End Common DCP Footer*/
