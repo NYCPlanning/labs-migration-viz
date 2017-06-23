@@ -240,3 +240,16 @@ ul.navbar-right {
   margin-bottom: 0;
 }
 /*End Common DCP Footer*/
+
+/*Common DCP Modal*/
+.modal-header {
+  background: #ececec;
+  font-family: Oswald,sans-serif;
+  color: #d96b27;
+}
+
+.modal-footer {
+  background: #ececec;
+}
+
+/*End Common DCP Modal*/
