@@ -1,4 +1,6 @@
 var selectedCharacteristic;
+var barData;
+var lineData;
 var yearRangeStrings = [
   '1935_1940',
   '1975_1980',
@@ -12,10 +14,16 @@ function highlight(highlightData) {
   var highlightCohort = highlightData.group;
 
 
-  // add selected class to all bars with this label
   svg
     .selectAll('g')
     .selectAll('.bar')
+    .classed('subdued', function (d) {
+      return d.group !== highlightCohort;
+    });
+
+  svg
+    .selectAll('g')
+    .selectAll('circle')
     .classed('subdued', function (d) {
       return d.group !== highlightCohort;
     });
@@ -62,7 +70,7 @@ function clearChart() {
   d3.selectAll('svg > path').remove();
 }
 
-function updateChart(barData, lineData) {
+function updateChart() {
   var svg = d3.select('svg');
   var clientRect = d3.select('body').node().getBoundingClientRect();
 
@@ -105,7 +113,7 @@ function updateChart(barData, lineData) {
   var getColor = chroma.scale(['#deebf7', '#9ecae1', '#3182bd']);
 
   var line = d3.line()
-    .x(function (d) { return outerX(d.year_range) + x(d.group) + margin.left + margin.right; })
+    .x(function (d) { return outerX(d.year_range) + x(d.group) + (x.bandwidth() / 2) + margin.left; })
     .y(function (d) { return y(d.net) + margin.top; })
     .curve(d3.curveCardinal);
 
@@ -141,7 +149,7 @@ function updateChart(barData, lineData) {
 
   ins.enter()
     .append('rect')
-      .attr('class', function (d) { return 'bar ' + d.group; })
+      .attr('class', function () { return 'bar in'; })
       .on('mouseover', highlight)
       .on('mouseout', unHighlight)
     .merge(ins)
@@ -173,7 +181,7 @@ function updateChart(barData, lineData) {
 
   outs.enter()
     .append('rect')
-      .attr('class', 'bar')
+      .attr('class', 'bar out')
       .on('mouseover', highlight)
       .on('mouseout', unHighlight)
     .merge(outs)
@@ -268,7 +276,7 @@ function getLineData(rawData, characteristic, yearRangeStrings) { // eslint-disa
     return d.characteristic === characteristic;
   });
 
-  var lineData = {};
+  var newLineData = {};
   for (var i = 0; i < filteredData.length; i += 1) {
     var thisRow = filteredData[i];
     var group = thisRow.group;
@@ -281,10 +289,10 @@ function getLineData(rawData, characteristic, yearRangeStrings) { // eslint-disa
         net: thisRow[yearRangeString + '_in'] - thisRow[yearRangeString + '_out']
       });
     });
-    lineData[group] = points;
+    newLineData[group] = points;
   }
 
-  return lineData;
+  return newLineData;
 }
 
 function getBarData(rawData, characteristic, yearRangeStrings) { // eslint-disable-line
@@ -292,10 +300,10 @@ function getBarData(rawData, characteristic, yearRangeStrings) { // eslint-disab
     return d.characteristic === characteristic;
   });
 
-  var barData = {};
+  var newBarData = {};
   yearRangeStrings.forEach(function (yearRangeString) {
     // create array of objects
-    barData[yearRangeString] = filteredData.map(function (d) {
+    newBarData[yearRangeString] = filteredData.map(function (d) {
       return {
         group: d.group,
         in: d[yearRangeString + '_in'],
@@ -304,7 +312,7 @@ function getBarData(rawData, characteristic, yearRangeStrings) { // eslint-disab
     });
   });
 
-  return barData;
+  return newBarData;
 }
 
 function updateTextArea(characteristic) {
@@ -315,11 +323,7 @@ function updateTextArea(characteristic) {
 
 //  kick things off by downloading the csv
 d3.csv('data/historic_migration_selchars.csv', function (data) {
-  // var barData = getBarData(data, selectedCharacteristic, yearRangeStrings);
-  // var lineData = getLineData(data, selectedCharacteristic, yearRangeStrings);
   initializeChart();
-
-  //window.addEventListener('resize', function () { updateChart(barData, lineData); });
 
   // change the selected characteristic when the user clicks a button
   $('.char-select>button').click(function () {
@@ -327,18 +331,23 @@ d3.csv('data/historic_migration_selchars.csv', function (data) {
     $(this).siblings().removeClass('active');
     $(this).addClass('active');
 
-    var newBarData = getBarData(data, selectedCharacteristic, yearRangeStrings);
-    var newLineData = getLineData(data, selectedCharacteristic, yearRangeStrings);
+    barData = getBarData(data, selectedCharacteristic, yearRangeStrings);
+    lineData = getLineData(data, selectedCharacteristic, yearRangeStrings);
 
     updateTextArea(selectedCharacteristic);
 
-    window.removeEventListener('resize', function () {});
-    window.addEventListener('resize', function () { updateChart(newBarData, newLineData); });
+    function update() {
+      updateChart();
+    }
+
+    window.addEventListener('resize', update);
 
     clearChart();
-    updateChart(newBarData, newLineData);
+    update();
   });
 
-  // kick things off by selecting age
+  // simulate click on age as the default
   $('#age').click();
 });
+
+window.addEventListener('resize', updateChart);

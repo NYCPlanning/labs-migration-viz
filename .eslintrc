@@ -6,7 +6,8 @@
     "$": true,
     "numeral", true,
     "_": true,
-    "chroma": true
+    "chroma": true,
+    "characteristics": true
   },
   "rules": {
     "func-names": 0,

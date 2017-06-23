@@ -17,7 +17,7 @@ svg {
   transition: opacity .1s ease-in-out;
 }
 
-.bar.subdued {
+.bar.subdued, circle.subdued {
   opacity: 0.2;
 }
 
@@ -50,13 +50,15 @@ circle {
   pointer-events: none;
   opacity: 1;
   fill: #FFF;
+  stroke: #000;
+  stroke-width: 1;
 }
 
 .trendline {
   pointer-events: none;
   display: none;
   fill: none;
-  stroke: #3a7c99;
+  stroke: #d96b27;
   stroke-linejoin: round;
   stroke-linecap: round;
   stroke-width: 2px;
@@ -67,8 +69,8 @@ circle {
   display: initial;
 }
 
-.in { fill: rgba(70, 180, 129, 1); }
-.out { fill:rgba(218, 89, 89, 1); }
+text.in { fill: rgba(70, 180, 129, 1); }
+text.out { fill:rgba(218, 89, 89, 1); }
 
 /*.in-selected { fill: #46b481; }
 .out-selected { fill: #da5959; }*/
