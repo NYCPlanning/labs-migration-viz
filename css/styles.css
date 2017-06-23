@@ -31,7 +31,7 @@ svg {
 
 .bar-label.net {
   fill: #959595;
-  opacity: 0
+  display: none;
 }
 
 .bar-label.selected {
@@ -43,13 +43,13 @@ svg {
 }
 
 circle.selected {
- fill: #FFF;
  opacity: 1;
 }
 
 circle {
   pointer-events: none;
-  opacity: 0.2;
+  opacity: 1;
+  fill: #FFF;
 }
 
 .trendline {
@@ -70,8 +70,8 @@ circle {
 .in { fill: rgba(70, 180, 129, 1); }
 .out { fill:rgba(218, 89, 89, 1); }
 
-.in-selected { fill: #46b481; }
-.out-selected { fill: #da5959; }
+/*.in-selected { fill: #46b481; }
+.out-selected { fill: #da5959; }*/
 
 .center-axis {
   stroke: #6b6b6d;
