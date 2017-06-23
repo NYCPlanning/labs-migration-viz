@@ -64,13 +64,13 @@ function highlight(highlightData) {
       + yearRange
       + ', <span class="in">'
       + numeral(highlightData.in).format('0,0')
-      + ' '
+      + '</span> '
       + characteristics[selectedCharacteristic].descriptor
       + ' '
       + highlightData.group
-      + ' moved to NYC</span>, while <span class="out">'
+      + ' moved to NYC while <span class="out">'
       + numeral(highlightData.out).format('0,0')
-      + ' moved out</span>. This resulted in the city\'s '
+      + '</span> moved out. This resulted in the city\'s '
       + direction + ' of '
       + numeral(net).format('0,0')
       + '</span> in this group due to migration.'
