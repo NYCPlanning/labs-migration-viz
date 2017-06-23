@@ -132,6 +132,38 @@ p.header-label {
   letter-spacing: 1.2px;
 }
 
+/*Legends*/
+
+.legend-color-box {
+  height: 10px;
+  width: 10px;
+  float: left;
+  margin-right: 10px;
+}
+
+.legend-items {
+  margin-top: 12px;
+}
+
+.legend-item {
+  margin-bottom: 4px;
+}
+
+.legend-item.subdued {
+  opacity: 0.2;
+}
+
+.legend-item.selected {
+  font-weight: 600;
+}
+
+
+.legend-text {
+  line-height: 12px;
+}
+
+/*End Legends*/
+
 /*Common DCP Navbar*/
 .navbar-collapse.collapsing, .navbar-collapse.in, .navbar-default {
   background-color: hsla(0,0%,100%,.94);

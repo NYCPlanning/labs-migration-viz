@@ -11,21 +11,24 @@ var yearRangeStrings = [
 
 function highlight(highlightData) {
   var svg = d3.select('svg');
+  var legendItems = d3.selectAll('.legend-item');
   var highlightCohort = highlightData.group;
 
 
   svg
-    .selectAll('g')
-    .selectAll('.bar')
+    .selectAll('g > .bar, g > circle')
     .classed('subdued', function (d) {
       return d.group !== highlightCohort;
     });
 
-  svg
-    .selectAll('g')
-    .selectAll('circle')
+  legendItems
     .classed('subdued', function (d) {
       return d.group !== highlightCohort;
+    });
+
+  legendItems
+    .classed('selected', function (d) {
+      return d.group === highlightCohort;
     });
 
   // add selected class to all net circles with this label
@@ -56,18 +59,17 @@ function highlight(highlightData) {
 }
 
 function unHighlight() {
-  var svg = d3.select('svg');
-  svg
-    .selectAll('.selected')
+  d3.selectAll('.selected')
     .classed('selected', false);
-  svg
-    .selectAll('.subdued')
+
+  d3.selectAll('.subdued')
     .classed('subdued', false);
 }
 
 function clearChart() {
   d3.selectAll('svg > g').remove();
   d3.selectAll('svg > path').remove();
+  d3.selectAll('.legend-items > *').remove();
 }
 
 function updateChart() {
@@ -104,7 +106,7 @@ function updateChart() {
   // local y scale
   var y = d3.scaleLinear()
     .domain([yMin, yMax])
-    .range([height - 30, 30]);
+    .range([height - 40, 40]);
 
   var z = d3.scaleBand()
     .domain(barData['1935_1940'].map(function (d) { return d.group; }))
@@ -116,6 +118,27 @@ function updateChart() {
     .x(function (d) { return outerX(d.year_range) + x(d.group) + (x.bandwidth() / 2) + margin.left; })
     .y(function (d) { return y(d.net) + margin.top; })
     .curve(d3.curveCardinal);
+
+  // render a legend
+  var legend = d3.select('.legend-items')
+    .selectAll('.legend-item')
+    .data(barData['1935_1940']);
+
+  var legendItems = legend.enter()
+    .append('div')
+    .attr('class', function (d) { return 'legend-item ' + d.group; });
+
+  legendItems.append('div')
+    .attr('class', 'legend-color-box')
+    .attr('style', function (d) {
+      return 'background: ' + getColor(z(d.group));
+    });
+
+  legendItems.append('div')
+    .attr('class', 'legend-text')
+    .text(function (d) { return d.group; });
+
+  // end legend
 
 
   svg.attr('width', width)
@@ -315,10 +338,15 @@ function getBarData(rawData, characteristic, yearRangeStrings) { // eslint-disab
   return newBarData;
 }
 
+// update the about text
 function updateTextArea(characteristic) {
   var thisCharacteristic = characteristics[characteristic];
   $('#char-display-name').text(thisCharacteristic.displayName);
   $('#char-about').text(thisCharacteristic.about);
+}
+
+function updateLegendArea(characteristic) {
+
 }
 
 Object.keys(characteristics).forEach(function (d) {
@@ -346,15 +374,10 @@ d3.csv('data/historic_migration_selchars.csv', function (data) {
     lineData = getLineData(data, selectedCharacteristic, yearRangeStrings);
 
     updateTextArea(selectedCharacteristic);
-
-    function update() {
-      updateChart();
-    }
-
-    window.addEventListener('resize', update);
+    updateLegendArea(selectedCharacteristic);
 
     clearChart();
-    update();
+    updateChart();
   });
 
   // simulate click on age as the default
