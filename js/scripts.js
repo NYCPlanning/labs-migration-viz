@@ -96,6 +96,7 @@ function unHighlight() {
 
 function clearChart() {
   d3.selectAll('svg > g').remove();
+  d3.selectAll('svg > .no-data').remove();
   d3.selectAll('svg > path').remove();
   d3.selectAll('.legend-items > *').remove();
 }
@@ -161,7 +162,6 @@ function updateChart() {
   legendItems.append('div')
     .attr('class', 'legend-color-box')
     .attr('style', function (d) {
-      console.log(z(d.group));
       return 'background: ' + getColor(z(d.group));
     });
 
@@ -194,6 +194,20 @@ function updateChart() {
       return 'translate(' + (outerX(d) + margin.left) + ',' + margin.top + ')';
     });
 
+  var noData = svg.selectAll('.no-data')
+    .data(Object.keys(barData));
+
+  noData.enter()
+    .append('text')
+    .attr('class', 'no-data')
+    .attr('text-anchor', 'middle')
+    .text(function (d) {
+      return barData[d][0].in === '' ? 'No data available' : '';
+    })
+    .merge(noData)
+    .attr('x', function (d) { return outerX(d) + (outerX.bandwidth() / 2); })
+    .attr('y', function () { return y(0) + margin.top - 8; }); // eslint-disable-line
+
   // append the inflow rectangles
   var ins = svg.selectAll('g').selectAll('.in')
     .data(function (d) { return barData[d]; });
@@ -220,8 +234,10 @@ function updateChart() {
     .append('text')
       .attr('class', function (d) { return 'bar-label in ' + d.group; })
       .attr('text-anchor', 'middle')
-      .text(function (d) { return numeral(d.in).format('0.0a') + ' in'; })
-    .merge(inLabels)
+      .text(function (d) {
+        return d.in === '' ? '' : numeral(d.in).format('0.0a') + ' in';
+      })
+      .merge(inLabels)
       .attr('x', function (d) { return x(d.group) + (x.bandwidth() / 2); })
       .attr('y', function (d) { return y(d.in) - 5; });
 
@@ -252,7 +268,9 @@ function updateChart() {
     .append('text')
       .attr('class', function (d) { return 'bar-label out ' + d.group; })
       .attr('text-anchor', 'middle')
-      .text(function (d) { return numeral(d.out).format('0.0a') + ' out'; })
+      .text(function (d) {
+        return d.in === '' ? '' : numeral(d.out).format('0.0a') + ' out';
+      })
     .merge(outLabels)
       .attr('x', function (d) { return x(d.group) + (x.bandwidth() / 2); })
       .attr('y', function (d) { return y(-d.out) + 15; });
@@ -267,7 +285,7 @@ function updateChart() {
     .append('text')
       .attr('class', function (d) { return 'bar-label net ' + d.group; })
       .attr('text-anchor', 'middle')
-      .text(function (d) { return 'Δ ' + numeral(d.in - d.out).format('0.0a'); })
+      .text(function (d) { return d.in === '' ? '' : 'Δ ' + numeral(d.in - d.out).format('0.0a'); })
     .merge(netLabels)
       .attr('x', function (d) { return x(d.group) + (x.bandwidth() / 2); })
       .attr('y', function (d) { return y(-d.out) + 35; });
@@ -295,7 +313,9 @@ function updateChart() {
         return y(net);
       })
       .attr('cx', function (d) { return x(d.group) + (x.bandwidth() / 2); })
-      .attr('r', 5);
+      .attr('r', function (d) {
+        return d.in === '' ? 0 : 5;
+      });
 
   // draw trendlines
   var trendlines = svg.selectAll('path')
@@ -334,11 +354,13 @@ function getLineData(rawData, characteristic, yearRangeStrings) { // eslint-disa
     var points = [];
     // iterate over yearRangeStrings and build point data
     yearRangeStrings.forEach(function (yearRangeString) { // eslint-disable-line
-      points.push({
-        group: group,
-        year_range: yearRangeString,
-        net: thisRow[yearRangeString + '_in'] - thisRow[yearRangeString + '_out']
-      });
+      if (thisRow[yearRangeString + '_in'] !== '') {
+        points.push({
+          group: group,
+          year_range: yearRangeString,
+          net: thisRow[yearRangeString + '_in'] - thisRow[yearRangeString + '_out']
+        });
+      }
     });
     newLineData[group] = points;
   }
@@ -393,10 +415,17 @@ d3.csv('data/historic_migration_selchars.csv', function (data) {
 
     clearChart();
     updateChart();
+
+    // set url hash
+    history.replaceState(undefined, undefined, '#' + selectedCharacteristic);
   });
 
-  // simulate click on age as the default
-  $('#age').click();
+  // select hashed characteristic
+  if (Object.keys(characteristics).indexOf(window.location.hash.split('#')[1]) > -1) {
+    $(window.location.hash).click();
+  } else {
+    $('#age').click();
+  }
 });
 
 window.addEventListener('resize', updateChart);

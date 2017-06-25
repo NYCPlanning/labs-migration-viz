@@ -141,6 +141,10 @@ p.header-label {
   letter-spacing: 1.2px;
 }
 
+.no-data {
+  fill: #848484;
+}
+
 /*Legends*/
 
 .legend-color-box {
