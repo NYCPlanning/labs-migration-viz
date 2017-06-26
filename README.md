@@ -17,10 +17,10 @@ Population Division
 
 - Navigate to the project directory and start a local webserver
 
-**Mac & Linux**
+**Python 2**
 `cd labs-migration-viz && python -m SimpleHTTPServer 8000`
 
-**Windows**
+**Python 3**
 `cd labs-migration-viz && python -m http.server 8000`
 
 - Open the site in your browser at `http://localhost:8000`
