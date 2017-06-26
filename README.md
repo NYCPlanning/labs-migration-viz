@@ -12,7 +12,11 @@ Population Division
 
 ## Development Environment
 - Clone this repository
+
 `git clone https://github.com/NYCPlanning/labs-migration-viz.git`
+
 - Navigate to the project directory and start a local webserver
+
 `cd labs-migration-viz && python -m SimpleHTTPServer 8000`
+
 - Open the site in your browser at `http://localhost:8000`
