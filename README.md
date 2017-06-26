@@ -1,5 +1,5 @@
-# labs-migration-viz
-A D3.js visualization of historic U.S. Census migration data for New York City
+# NYC Historic Migration Data Visualization
+A single-page interactive visualization of historic U.S. Census migration data for New York City 
 
 
 ## About
@@ -20,3 +20,6 @@ Population Division
 `cd labs-migration-viz && python -m SimpleHTTPServer 8000`
 
 - Open the site in your browser at `http://localhost:8000`
+
+## A project by NYC Planning Labs
+Check out the project profile at planninglabs.nyc/projects/historic-migration-dataviz
