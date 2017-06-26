@@ -103,7 +103,7 @@ function clearChart() {
 
 function updateChart() {
   var svg = d3.select('svg');
-  var clientRect = d3.select('body').node().getBoundingClientRect();
+  var clientRect = d3.select('.chart-container').node().getBoundingClientRect();
 
   // get maximum absolute value from the data
   var max = d3.max(
@@ -117,7 +117,7 @@ function updateChart() {
 
   // set the dimensions and margins of the graph
   var margin = { top: 20, right: 0, bottom: 20, left: 0 };
-  var width = clientRect.width;
+  var width = clientRect.width - 30; // -30 accounts for 15px of padding on each side
   var height = 450;
 
   // x scale to render each chart across the same axis
@@ -128,7 +128,7 @@ function updateChart() {
 
   // local x scale
   var x = d3.scaleBand()
-    .domain(barData['1935_1940'].map(function (d) { return d.group; }))
+    .domain(barData['1975_1980'].map(function (d) { return d.group; }))
     .range([0, width / 6])
     .paddingOuter(0.5)
     .paddingInner(0.0);
@@ -139,7 +139,7 @@ function updateChart() {
     .range([height - 40, 40]);
 
   var z = d3.scalePoint()
-    .domain(barData['1935_1940'].map(function (d) { return d.group; }))
+    .domain(barData['1975_1980'].map(function (d) { return d.group; }))
     .range([0, 1]);
 
   var getColor = chroma.scale(characteristics[selectedCharacteristic].colors);
@@ -154,7 +154,7 @@ function updateChart() {
   // render a legend
   var legend = d3.select('.legend-items')
     .selectAll('.legend-item')
-    .data(barData['1935_1940']);
+    .data(barData['1975_1980']);
 
   var legendItems = legend.enter()
     .append('div')
@@ -176,11 +176,11 @@ function updateChart() {
     .attr('height', height);
 
   svg.selectAll('.in-label')
-    .attr('x', 20)
+    .attr('x', 0)
     .attr('y', margin.top + 100);
 
   svg.selectAll('.out-label')
-    .attr('x', 20)
+    .attr('x', 0)
     .attr('y', height - margin.bottom - 50);
 
   // add g elements for each chart, offset by outerX scale
@@ -208,13 +208,13 @@ function updateChart() {
   svg.append('text')
     .attr('class', 'hundredk-axis')
     .text('100k')
-    .attr('x', margin.left + 20)
+    .attr('x', 0)
     .attr('y', y(100000) + margin.top + 12);
 
   svg.append('text')
     .attr('class', 'hundredk-axis')
     .text('-100k')
-    .attr('x', margin.left + 20)
+    .attr('x', 0)
     .attr('y', y(-100000) + margin.top + 12);
 
   g.enter()
@@ -375,7 +375,12 @@ function initializeChart() {
     .text('OUT-MIGRATION');
 }
 
-function getLineData(rawData, characteristic, yearRangeStrings) { // eslint-disable-line
+function getLineData(rawData, characteristic, yearRangeStringsOriginal) {
+  // eliminate 1935-1940 so that the line always starts at 1975_1980
+  // may change later if we can figure out a better way to solve the non-continuous timeline problem
+  var yearRangeStrings = yearRangeStringsOriginal.slice();  // eslint-disable-line
+  yearRangeStrings.shift();
+
   var filteredData = _(rawData).filter(function (d) {
     return d.characteristic === characteristic;
   });

@@ -89,8 +89,12 @@ span.out { color: rgba(218, 89, 89, 1); }
   font-size: 10px;
 }
 
-.container-fluid {
+.main {
   margin-top: 50px;
+}
+
+.chart-container {
+  padding: 0 15px;
 }
 
 /*Since bootstrap can't do 20% wide columns, use this class that mimics col-XX-xx for the year labels*/
