@@ -56,6 +56,7 @@ function highlight(highlightData) {
   $('#char-display-name').text(characteristics[selectedCharacteristic].displayName + ' - ' + highlightData.group);
 
   var yearRange = highlightData.year_range.split('_').join(' and ');
+  console.log(highlightData.in, highlightData.out, highlightData.in > highlightData.out)
   var direction = (highlightData.in > highlightData.out) ? '<span class="in">net gain' : '<span class="out">net loss';
   var net = Math.abs(highlightData.in - highlightData.out);
 
@@ -412,8 +413,8 @@ function getBarData(rawData, characteristic, yearRangeStrings) { // eslint-disab
     newBarData[yearRangeString] = filteredData.map(function (d) {
       return {
         group: d.group,
-        in: d[yearRangeString + '_in'],
-        out: d[yearRangeString + '_out'],
+        in: parseInt(d[yearRangeString + '_in'], 10),
+        out: parseInt(d[yearRangeString + '_out'], 10),
         year_range: yearRangeString
       };
     });
