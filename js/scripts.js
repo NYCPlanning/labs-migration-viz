@@ -56,7 +56,6 @@ function highlight(highlightData) {
   $('#char-display-name').text(characteristics[selectedCharacteristic].displayName + ' - ' + highlightData.group);
 
   var yearRange = highlightData.year_range.split('_').join(' and ');
-  console.log(highlightData.in, highlightData.out, highlightData.in > highlightData.out)
   var direction = (highlightData.in > highlightData.out) ? '<span class="in">net gain' : '<span class="out">net loss';
   var net = Math.abs(highlightData.in - highlightData.out);
 
@@ -236,7 +235,7 @@ function updateChart() {
     .attr('class', 'no-data')
     .attr('text-anchor', 'middle')
     .text(function (d) {
-      return barData[d][0].in === '' ? 'No data available' : '';
+      return isNaN(barData[d][0].in) ? 'No data available' : '';
     })
     .merge(noData)
     .attr('x', function (d) { return outerX(d) + (outerX.bandwidth() / 2); })
@@ -269,7 +268,7 @@ function updateChart() {
       .attr('class', function (d) { return 'bar-label in ' + d.group; })
       .attr('text-anchor', 'middle')
       .text(function (d) {
-        return d.in === '' ? '' : numeral(d.in).format('0.0a') + ' in';
+        return isNaN(d.in) ? '' : numeral(d.in).format('0.0a') + ' in';
       })
       .merge(inLabels)
       .attr('x', function (d) { return x(d.group) + (x.bandwidth() / 2); })
@@ -303,7 +302,7 @@ function updateChart() {
       .attr('class', function (d) { return 'bar-label out ' + d.group; })
       .attr('text-anchor', 'middle')
       .text(function (d) {
-        return d.in === '' ? '' : numeral(d.out).format('0.0a') + ' out';
+        return isNaN(d.in) ? '' : numeral(d.out).format('0.0a') + ' out';
       })
     .merge(outLabels)
       .attr('x', function (d) { return x(d.group) + (x.bandwidth() / 2); })
@@ -319,7 +318,7 @@ function updateChart() {
     .append('text')
       .attr('class', function (d) { return 'bar-label net ' + d.group; })
       .attr('text-anchor', 'middle')
-      .text(function (d) { return d.in === '' ? '' : numeral(d.in - d.out).format('0.0a') + ' net'; })
+      .text(function (d) { return isNaN(d.in) ? '' : numeral(d.in - d.out).format('0.0a') + ' net'; })
     .merge(netLabels)
       .attr('x', function (d) { return x(d.group) + (x.bandwidth() / 2); })
       .attr('y', function (d) { return y(-d.out) + 35; });
@@ -348,7 +347,7 @@ function updateChart() {
       })
       .attr('cx', function (d) { return x(d.group) + (x.bandwidth() / 2); })
       .attr('r', function (d) {
-        return d.in === '' ? 0 : 5;
+        return isNaN(d.in) ? 0 : 5;
       });
 
   // draw trendlines
