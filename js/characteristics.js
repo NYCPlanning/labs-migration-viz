@@ -39,13 +39,13 @@ var characteristics = { // eslint-disable-line
   earnings: {
     displayName: 'Earnings',
     colors: ['#a6d1f8', '#012e60'],
-    about: 'Earnings may change considerably when a person migrates, and these data represent only the amount a worker earns at their destination. Losses in the number of workers who earned income around the median value for all New Yorkers have experienced a net loss of population in every decade, except the most recent, where net migration was close to zero.  The same is true for workers earning $75,000-$149,000.  These data indicate that the highest earners are currently coming to the city in larger numbers than previously, with a net migration that is slightly positive, a first in the post-1975 period. ',
+    about: 'Earnings may change considerably when a person migrates, and these data represent only the amount a worker earns at their destination. Losses in the number of workers who earned income around the median value for all New Yorkers have experienced a net loss of population in every decade, except the most recent, where net migration was close to zero.  The same is true for workers earning $75,000-$149,000.  These data indicate that the highest earners are currently coming to the city in larger numbers than previously, with a net migration that is slightly positive, a first in the post-1975 period.',
     descriptor: 'people whose earnings were'
   },
   occupation: {
     displayName: 'Occupation',
     colors: ['#F5BE9F', '#1B83B0', '#5E170E', '#FDC010', '#1F4064', '#CD594A', '#88D0EA', '#C17229'],
-    about: 'Occupation describes a worker’s function within their workplace, irrespective of what industry they’re employed in. Net migration for higher skilled occupations (the first four bars) has consistently been higher than other occupations since 1975, especially for those professionals and managers in business and science, showing that the city’s has always attracted and better retained these types of workers, even during the 1970s fiscal crisis. Service and industrial workers (the last two bars) have tended to migrate out of the city, which is especially true today.',
+    about: 'Occupation describes a worker’s function within their workplace, irrespective of what industry they’re employed in. Net migration for higher skilled occupations (the first four bars) has consistently been higher than other occupations since 1975, especially for those professionals and managers in business and science, showing that the city has always attracted and better retained these types of workers, even during the 1970’s fiscal crisis. Service and industrial workers (the last two bars) have tended to migrate out of the city, which is especially true today.',
     descriptor: 'people whose occupation was'
   },
   industry: {
