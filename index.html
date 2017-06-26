@@ -5,6 +5,7 @@
   <title>NYC Planning Migration Viz</title>
   <meta content="NYC Planning Migration Viz" name="description">
   <meta content="NYC Planning Labs" name="author">
+  <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
   <link href="https://fonts.googleapis.com/css?family=Oswald:300,400,500|Roboto:100,200,300,400,500" rel="stylesheet">
   <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
   <link href="css/styles.css" rel="stylesheet"><!--[if lt IE 9]>
@@ -71,7 +72,7 @@
             <img class="logo" src="https://capitalplanning.nyc.gov/img/logo_80.png" alt="DCP">
           </a>
           <p class="copyright">Copyright © NYC Department of City Planning. All rights reserved.</p>
-          <p class="copyright">A Project by the DCP Population Division and <a href="http://planninglabs.nyc">NYC Planning Labs</a></p>
+          <p class="copyright">A Project by the DCP Population Division and <a href="http://planninglabs.nyc">NYC Planning Labs</a>. | <a href="https://github.com/NYCPlanning/labs-migration-viz/issues/">Report a Bug</a></p>
         </div>
       </div>
     </div>
@@ -82,11 +83,21 @@
     <div class="modal-content">
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        <h4 class="modal-title" id="myModalLabel">About the Data</h4>
+        <h4 class="modal-title" id="myModalLabel">Data</h4>
       </div>
       <div class="modal-body">
+        <h4>About the Data</h4>
         <p>Up until 2000, the long form census asked respondents where they lived "5 years ago." Beginning in 2006 the American Community Survey asked respondents where they lived "1 year ago." The ACS data has been adjusted to be historically comparable. The full methodology is forthcoming.</p>
         <p>Raw data from IPUMS-USA, University of Minnesota, <a href="https://usa.ipums.org/usa/index.shtml">www.ipums.org</a>: 1940 1% Sample, 1980 5% State Sample, 1990 5% Sample, 2000 5% Sample, and 2010-14 ACS.</p>
+
+        <h4>Download</h4>
+        <p>Download the data that powers this visualization as a CSV.</p>
+        <a href="data/historic_migration_selchars.csv" rel="nofollow">
+          <div class="btn btn-default" id="csv-download"><span class="glyphicon glyphicon-save-file" aria-hidden="true"></span> CSV</div>
+        </a>
+        <a href="data/historic_migration_selchars_readme.txt" rel="nofollow">
+          <div class="btn btn-default" id="readme-download"><span class="glyphicon glyphicon-save-file" aria-hidden="true"></span> README</div>
+        </a>
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>

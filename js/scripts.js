@@ -462,3 +462,8 @@ d3.csv('data/historic_migration_selchars.csv', function (data) {
 });
 
 window.addEventListener('resize', updateChart);
+
+// trigger download
+$('#csv-download').click(function () {
+
+});
