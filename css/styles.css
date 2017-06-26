@@ -30,7 +30,7 @@ svg {
 }
 
 .bar-label.net {
-  fill: #959595;
+  fill: #000;
   display: none;
 }
 
@@ -81,6 +81,12 @@ span.out { color: rgba(218, 89, 89, 1); }
 .center-axis {
   stroke: #6b6b6d;
   stroke-width: 1;
+}
+
+.hundredk-axis {
+  stroke: #cacaca;
+  stroke-width: 0.5;
+  font-size: 10px;
 }
 
 .container-fluid {

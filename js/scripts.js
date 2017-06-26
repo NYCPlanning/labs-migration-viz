@@ -116,7 +116,7 @@ function updateChart() {
   var yMax = max;
 
   // set the dimensions and margins of the graph
-  var margin = { top: 20, right: 10, bottom: 20, left: 10 };
+  var margin = { top: 20, right: 0, bottom: 20, left: 0 };
   var width = clientRect.width;
   var height = 450;
 
@@ -130,7 +130,8 @@ function updateChart() {
   var x = d3.scaleBand()
     .domain(barData['1935_1940'].map(function (d) { return d.group; }))
     .range([0, width / 6])
-    .padding(0.1);
+    .paddingOuter(0.5)
+    .paddingInner(0.0);
 
   // local y scale
   var y = d3.scaleLinear()
@@ -186,6 +187,36 @@ function updateChart() {
   var g = svg.selectAll('g')
     .data(Object.keys(barData));
 
+  // 100,000 people axis
+  svg.selectAll('.hundredk-axis').remove();
+  svg.append('line')
+    .attr('class', 'hundredk-axis')
+    .attr('x1', 0)
+    .attr('y1', y(100000) + margin.top)
+    .attr('x2', width + margin.left + margin.right)
+    .attr('y2', y(100000) + margin.top)
+    .attr('width', width);
+
+  svg.append('line')
+    .attr('class', 'hundredk-axis')
+    .attr('x1', 0)
+    .attr('y1', y(-100000) + margin.top)
+    .attr('x2', width + margin.left + margin.right)
+    .attr('y2', y(-100000) + margin.top)
+    .attr('width', width);
+
+  svg.append('text')
+    .attr('class', 'hundredk-axis')
+    .text('100k')
+    .attr('x', margin.left + 20)
+    .attr('y', y(100000) + margin.top + 12);
+
+  svg.append('text')
+    .attr('class', 'hundredk-axis')
+    .text('-100k')
+    .attr('x', margin.left + 20)
+    .attr('y', y(-100000) + margin.top + 12);
+
   g.enter()
     .append('g')
     .attr('class', 'subbox')
@@ -194,6 +225,8 @@ function updateChart() {
       return 'translate(' + (outerX(d) + margin.left) + ',' + margin.top + ')';
     });
 
+
+  // add "No Data Available" message for some year ranges
   var noData = svg.selectAll('.no-data')
     .data(Object.keys(barData));
 
@@ -285,7 +318,7 @@ function updateChart() {
     .append('text')
       .attr('class', function (d) { return 'bar-label net ' + d.group; })
       .attr('text-anchor', 'middle')
-      .text(function (d) { return d.in === '' ? '' : 'Δ ' + numeral(d.in - d.out).format('0.0a'); })
+      .text(function (d) { return d.in === '' ? '' : numeral(d.in - d.out).format('0.0a') + ' net'; })
     .merge(netLabels)
       .attr('x', function (d) { return x(d.group) + (x.bandwidth() / 2); })
       .attr('y', function (d) { return y(-d.out) + 35; });
