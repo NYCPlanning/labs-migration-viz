@@ -116,9 +116,9 @@ function updateChart() {
   var yMax = max;
 
   // set the dimensions and margins of the graph
-  var margin = { top: 20, right: 0, bottom: 20, left: 0 };
+  var margin = { top: 0, right: 0, bottom: 20, left: 0 };
   var width = clientRect.width - 30; // -30 accounts for 15px of padding on each side
-  var height = 450;
+  var height = 400;
 
   // x scale to render each chart across the same axis
   var outerX = d3.scaleBand()
@@ -243,7 +243,11 @@ function updateChart() {
 
   // append the inflow rectangles
   var ins = svg.selectAll('g').selectAll('.in')
-    .data(function (d) { return barData[d]; });
+    .data(function (d) {
+      return barData[d].filter(function (group) {
+        return !isNaN(group.in);
+      });
+    });
 
   ins.enter()
     .append('rect')
@@ -260,7 +264,9 @@ function updateChart() {
   // append inflow labels
   var inLabels = svg.selectAll('g').selectAll('.bar-label.in')
     .data(function (d) {
-      return barData[d];
+      return barData[d].filter(function (group) {
+        return !isNaN(group.in);
+      });
     });
 
   inLabels.enter()
@@ -277,7 +283,11 @@ function updateChart() {
 
   // append the outflow rectangles
   var outs = svg.selectAll('g').selectAll('.out')
-    .data(function (d) { return barData[d]; });
+    .data(function (d) {
+      return barData[d].filter(function (group) {
+        return !isNaN(group.in);
+      });
+    });
 
   outs.enter()
     .append('rect')
@@ -294,7 +304,9 @@ function updateChart() {
   // append outflow bar labels
   var outLabels = svg.selectAll('g').selectAll('.bar-label.out')
     .data(function (d) {
-      return barData[d];
+      return barData[d].filter(function (group) {
+        return !isNaN(group.in);
+      });
     });
 
   outLabels.enter()
@@ -311,7 +323,9 @@ function updateChart() {
   // append net bar labels
   var netLabels = svg.selectAll('g').selectAll('.bar-label.net')
     .data(function (d) {
-      return barData[d];
+      return barData[d].filter(function (group) {
+        return !isNaN(group.in);
+      });
     });
 
   netLabels.enter()
@@ -335,7 +349,11 @@ function updateChart() {
 
   // append net migration dots
   var circles = svg.selectAll('g').selectAll('circle')
-    .data(function (d) { return barData[d]; });
+    .data(function (d) {
+      return barData[d].filter(function (group) {
+        return !isNaN(group.in);
+      });
+    });
 
   circles.enter()
     .append('circle')
