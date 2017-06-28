@@ -25,5 +25,5 @@ Population Division
 
 - Open the site in your browser at `http://localhost:8000`
 
-## A project by NYC Planning Labs
+## A project by the DCP Population Division and NYC Planning Labs
 Check out the project profile at planninglabs.nyc/projects/historic-migration-dataviz
