@@ -27,6 +27,8 @@ In the spirit of free software, everyone is encouraged to help improve this proj
   - Clean up code
   - Add new features
 
+**[Read more about contributing.](CONTRIBUTING.md)**
+
 ## Requirements
 
 You will need the following things properly installed on your computer.
@@ -45,14 +47,14 @@ You will need the following things properly installed on your computer.
 
 ## Architecture
 
-This project uses [Bootstrap](https://getbootstrap.com/) for layout, and a custom [D3.js](https://d3js.org/) chart. 
+This project uses [Bootstrap](https://getbootstrap.com/) for layout, and a custom [D3.js](https://d3js.org/) chart.
 
 ## Deployment
 
-This project can be deployed on any static web server. 
+This project can be deployed on any static web server.
 
 - Create a new Git remote called `dokku`: `git remote add dokku dokku@{servername}:{appname}`
-- Deploy via Dokku using `git push dokku master`. Because `.static` exists in the root of the repo, Dokku will deploy the app using the NGINX buildpack. 
+- Deploy via Dokku using `git push dokku master`. Because `.static` exists in the root of the repo, Dokku will deploy the app using the NGINX buildpack.
 
 ## Contact Us
 
