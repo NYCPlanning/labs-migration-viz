@@ -1,9 +1,8 @@
-html {
-  height: 100%;
-}
-
-body {
-  height: calc(100vh - 50px);
+.viz {
+  background-color: #fff;
+  padding-bottom: 2rem;
+  box-shadow: 0 4px 0 rgba(0,0,0,.1);
+  margin-bottom: 3rem;
 }
 
 svg {
@@ -87,8 +86,8 @@ text.out { fill: rgba(218, 89, 89, 1); }
 span.in { color: rgba(70, 180, 129, 1); }
 span.out { color: rgba(218, 89, 89, 1); }
 
-/*.in-selected { fill: #46b481; }
-.out-selected { fill: #da5959; }*/
+/* .in-selected { fill: #46b481; }
+.out-selected { fill: #da5959; } */
 
 .center-axis, .center-axis-break-vertical {
   stroke: #6b6b6d;
@@ -109,37 +108,20 @@ span.out { color: rgba(218, 89, 89, 1); }
   padding: 0 15px;
 }
 
-/*Since bootstrap can't do 20% wide columns, use this class that mimics col-XX-xx for the year labels*/
 .year-label {
   text-align: center;
-  position: relative;
-  min-height: 1px;
-  padding-right: 15px;
-  padding-left: 15px;
-  width: 20%;
-  float:left;
+  padding: 0.5rem;
   font-size: 25px;
   color: #848484;
-  font-weight: 400;
 }
-
 .year-label:not(:last-child) {
   border-right: 1px solid #9e9595;
 }
-
-.year-label-row {
-  left: 15px;
-  right: 15px;
-  line-height: 48px;
-}
-
 @media (max-width:920px) {
   .year-label {
     font-size: 16px;
   }
 }
-
-
 
 #cohort-label {
   position: absolute;
@@ -149,48 +131,40 @@ span.out { color: rgba(218, 89, 89, 1); }
   padding: 10px 0;
 }
 
-.meta p {
-  font-size: 12px;
-}
-
-p.header-label {
-  color: #d96b27;
-  text-transform: uppercase;
-  font-weight: 600;
-  font-size: 8px;
-  margin: 10px 0;
-  margin-bottom: -8px;
-  letter-spacing: 1.2px;
-}
-
 .no-data {
   fill: #848484;
 }
 
-#char-display-parenthetical {
-  color: darkred;
+.char-header {
+  margin-bottom: 0.25rem;
 }
 
-/*Legends*/
+#char-display-parenthetical {
+  color: #555;
+  font-weight: 400;
+  font-size: 0.8em;
+}
 
+
+/* Legends */
 .legend-color-box {
-  height: 10px;
-  width: 10px;
-  float: left;
-  margin-right: 10px;
+  height: 1.2em;
+  width: 1.2em;
+  display: inline-block;
+  margin-right: 0.5em;
+  vertical-align: middle;
 }
 
 .key-legend-items {
-  margin: 12px 0 10px 0;
+  /*margin: 12px 0 10px 0;*/
 }
 
 .legend-items {
-  margin: 12px 0 10px 0;
+  margin-bottom: 1rem;
 }
 
 .legend-item {
-  margin-top: 0;
-  margin-bottom: 4px;
+  margin-bottom: 0.2rem;
 }
 
 .legend-item.subdued {
@@ -203,88 +177,38 @@ p.header-label {
 
 
 .legend-text {
-  line-height: 12px;
+  display: inline-block;
 }
 
-/*End Legends*/
 
-/*Common DCP Navbar*/
-.navbar-collapse.collapsing, .navbar-collapse.in, .navbar-default {
-  background-color: hsla(0,0%,100%,.94);
+/* Footer */
+.site-footer {
+  background: #f1f1f1;
+  padding: 3rem 0;
 }
 
-.navbar-default .navbar-brand {
-  background-image: url('https://capitalplanning.nyc.gov/img/logo_120.png');
-  background-repeat: no-repeat;
-  background-position: 16px 9px;
-  background-size: 66px;
-  height: 50px;
-  width: 100px;
-  padding: 0;
+
+/* Button Group UI */
+.char-select {
+  padding: 1rem;
+  white-space: nowrap;
+  overflow: auto;
 }
-
-.navbar-title {
-  float: left;
-  color: #d96b27;
-  font-size: 22px;
-  line-height: 50px;
+.char-select .button {
+  margin: 0;
 }
-
-.navbar-title .title {
-  color: #959595;
-  font-weight: 300;
+.char-select .button:not(:first-child) {
+  border-bottom-left-radius: 0;
+  border-top-left-radius: 0;
 }
-
-.dropdown-menu>li>a, .navbar-default .navbar-nav>li>a {
-    padding: 15px 18px;
-    color: #db691b;
-    font-size: 16px;
-    font-weight: 300;
+.char-select .button:not(:last-child) {
+  border-bottom-right-radius: 0;
+  border-top-right-radius: 0;
 }
-
-nav {
-  font-family: Oswald,sans-serif;
+.char-select .button.active {
+  background-color: #ae561f;
+  color: #fff;
 }
-
-ul.navbar-right {
-    margin-right: 0;
+.char-select .button:not(.active) + .button:not(:first-child):not(.active) {
+  border-left-color: #bebebe;
 }
-
-.navbar-default .navbar-nav>li:hover {
-    background: #eee;
-}
-
-.navbar-default .navbar-brand:focus, .navbar-default .navbar-brand:hover, .navbar-default .navbar-nav>li>a:hover {
-    color: #af4c0f;
-    cursor: pointer;
-}
-
-/*End Common DCP Navbar*/
-
-/*Common DCP Footer*/
-.footer {
-  background: #ececec;
-  padding-top: 56px;
-  padding-bottom: 56px;
-  font-size: 14px;
-  font-weight: 400;
-}
-
-.footer .copyright {
-  font-size: 11px;
-  margin-bottom: 0;
-}
-/*End Common DCP Footer*/
-
-/*Common DCP Modal*/
-.modal-header {
-  background: #ececec;
-  font-family: Oswald,sans-serif;
-  color: #d96b27;
-}
-
-.modal-footer {
-  background: #ececec;
-}
-
-/*End Common DCP Modal*/

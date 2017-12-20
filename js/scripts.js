@@ -494,7 +494,7 @@ Object.keys(characteristics).forEach(function (d) {
   d3.select('.char-select')
     .append('button')
     .attr('id', d)
-    .attr('class', 'btn btn-default btn-xs')
+    .attr('class', 'button gray small')
     .text(characteristics[d].displayName);
 });
 
