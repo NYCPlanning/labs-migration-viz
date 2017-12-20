@@ -179,11 +179,11 @@ function updateChart() {
 
   svg.selectAll('.in-label')
     .attr('x', 0)
-    .attr('y', margin.top + 100);
+    .attr('y', margin.top + 65);
 
   svg.selectAll('.out-label')
     .attr('x', 0)
-    .attr('y', height - margin.bottom - 50);
+    .attr('y', height - margin.bottom - 25);
 
   // add g elements for each chart, offset by outerX scale
   var g = svg.selectAll('g')
