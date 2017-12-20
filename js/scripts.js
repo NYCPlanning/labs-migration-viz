@@ -53,12 +53,19 @@ function highlight(highlightData) {
     });
 
   // update text area
-  $('#char-display-name').text(characteristics[selectedCharacteristic].displayName + ' - ' + highlightData.group);
+  let displayName = characteristics[selectedCharacteristic].displayName;
+  if (selectedCharacteristic !== 'total') displayName = displayName + ' - ' + highlightData.group;
+  $('#char-display-name').text(displayName);
   $('#char-display-parenthetical').text(characteristics[selectedCharacteristic].displayParenthetical || " ");
+
 
   var yearRange = highlightData.year_range.split('_').join(' and ');
   var direction = (highlightData.in > highlightData.out) ? '<span class="in">net gain' : '<span class="out">net loss';
   var net = Math.abs(highlightData.in - highlightData.out);
+
+  // special handling of the descriptive text for the 'total' characteristic
+  var group = selectedCharacteristic === 'total' ? '' : highlightData.group;
+  var inThisGroup = selectedCharacteristic === 'total' ? '' : 'in this group ';
 
   $('#char-about').html(
     'Between '
@@ -68,13 +75,15 @@ function highlight(highlightData) {
       + '</span> '
       + characteristics[selectedCharacteristic].descriptor
       + ' '
-      + highlightData.group
+      + group
       + ' moved to NYC while <span class="out">'
       + numeral(highlightData.out).format('0,0')
       + '</span> moved out. This resulted in the city\'s '
       + direction + ' of '
       + numeral(net).format('0,0')
-      + '</span> in this group due to migration.'
+      + '</span> '
+      + inThisGroup
+      + 'due to migration.'
   );
 }
 
