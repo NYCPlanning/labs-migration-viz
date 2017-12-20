@@ -56,6 +56,8 @@ function highlight(highlightData) {
   let displayName = characteristics[selectedCharacteristic].displayName;
   if (selectedCharacteristic !== 'total') displayName = displayName + ' - ' + highlightData.group;
   $('#char-display-name').text(displayName);
+  $('#char-display-parenthetical').text(characteristics[selectedCharacteristic].displayParenthetical || " ");
+
 
   var yearRange = highlightData.year_range.split('_').join(' and ');
   var direction = (highlightData.in > highlightData.out) ? '<span class="in">net gain' : '<span class="out">net loss';
@@ -89,6 +91,7 @@ function highlight(highlightData) {
 function updateTextArea(characteristic) {
   var thisCharacteristic = characteristics[characteristic];
   $('#char-display-name').text(thisCharacteristic.displayName);
+  $('#char-display-parenthetical').text(thisCharacteristic.displayParenthetical || " ");
   $('#char-about').text(thisCharacteristic.about);
 }
 
@@ -185,11 +188,11 @@ function updateChart() {
 
   svg.selectAll('.in-label')
     .attr('x', 0)
-    .attr('y', margin.top + 100);
+    .attr('y', margin.top + 65);
 
   svg.selectAll('.out-label')
     .attr('x', 0)
-    .attr('y', height - margin.bottom - 50);
+    .attr('y', height - margin.bottom - 25);
 
   // add g elements for each chart, offset by outerX scale
   var g = svg.selectAll('g')

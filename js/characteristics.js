@@ -42,6 +42,7 @@ var characteristics = { // eslint-disable-line
 
   earnings: {
     displayName: 'Earnings',
+    displayParenthetical: '(In constant 2014 US dollars)',
     colors: ['#a6d1f8', '#012e60'],
     about: 'Earnings may change considerably when a person migrates, and these data represent only the amount a worker earns at their destination. Workers with earnings between $25,000 and $50,000 experienced net outflows in every decade, except the most recent, where the net inflow was 12,000. The same trajectory was true for workers with earning between $75,000 and $150,000, and for those earning $150,000 and over. These data indicate that the highest earners are currently coming to the city in larger numbers than previously, with a net migration that has turned slightly positive, a first in the post-1975 period. Indeed, across all earning groups, net migration losses were attenuated or net migration gains increased in 2010-2014.',
     descriptor: 'people whose earnings were'
