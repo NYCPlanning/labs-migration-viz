@@ -343,7 +343,14 @@ function updateChart() {
     .append('text')
       .attr('class', function (d) { return 'bar-label net ' + d.group; })
       .attr('text-anchor', 'middle')
-      .text(function (d) { return isNaN(d.in) ? '' : numeral(d.in - d.out).format('0.0a') + ' net'; })
+      .text(function (d) {
+        const net = d.in - d.out;
+
+        if (isNaN(d.in)) return '';
+        if (net > 999) return numeral(net).format('0.0a') + ' net';
+        return (net / 1000).toFixed(1) + 'k'
+
+      })
     .merge(netLabels)
       .attr('x', function (d) { return x(d.group) + (x.bandwidth() / 2); })
       .attr('y', function (d) { return y(-d.out) + 35; });
