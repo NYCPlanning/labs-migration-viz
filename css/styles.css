@@ -155,6 +155,10 @@ p.header-label {
   fill: #848484;
 }
 
+#char-display-parenthetical {
+  color: darkred;
+}
+
 /*Legends*/
 
 .legend-color-box {
