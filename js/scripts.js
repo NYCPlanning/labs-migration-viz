@@ -54,6 +54,7 @@ function highlight(highlightData) {
 
   // update text area
   $('#char-display-name').text(characteristics[selectedCharacteristic].displayName + ' - ' + highlightData.group);
+  $('#char-display-parenthetical').text(characteristics[selectedCharacteristic].displayParenthetical || " ");
 
   var yearRange = highlightData.year_range.split('_').join(' and ');
   var direction = (highlightData.in > highlightData.out) ? '<span class="in">net gain' : '<span class="out">net loss';
@@ -81,6 +82,7 @@ function highlight(highlightData) {
 function updateTextArea(characteristic) {
   var thisCharacteristic = characteristics[characteristic];
   $('#char-display-name').text(thisCharacteristic.displayName);
+  $('#char-display-parenthetical').text(thisCharacteristic.displayParenthetical || " ");
   $('#char-about').text(thisCharacteristic.about);
 }
 
