@@ -337,7 +337,7 @@ function updateChart() {
       .attr('x', function (d) { return x(d.group) + (x.bandwidth() / 2); })
       .attr('y', function (d) { return y(-d.out) + 35; });
 
-
+  // zero axis
   svg.selectAll('.center-axis').remove();
   svg.append('line')
     .attr('class', 'center-axis')
@@ -345,7 +345,34 @@ function updateChart() {
     .attr('y1', y(0) + margin.top)
     .attr('x2', width + margin.left + margin.right)
     .attr('y2', y(0) + margin.top)
-    .attr('width', width);
+
+  // zero axis break between 35-40 and 75-80
+
+  const midpointX = outerX.step();
+
+  svg.selectAll('.center-axis-break').remove();
+  svg.append('line')
+    .attr('class', 'center-axis-break')
+    .attr('stroke', '#FFF')
+    .attr('x1', midpointX)
+    .attr('y1', y(0) + margin.top)
+    .attr('x2', midpointX + 5)
+    .attr('y2', y(0) + margin.top)
+
+    svg.selectAll('.center-axis-break-vertical').remove();
+    svg.append('line')
+      .attr('class', 'center-axis-break-vertical')
+      .attr('x1', midpointX)
+      .attr('y1', y(0) + margin.top - 5)
+      .attr('x2', midpointX)
+      .attr('y2', y(0) + margin.top + 5)
+
+    svg.append('line')
+      .attr('class', 'center-axis-break-vertical')
+      .attr('x1', midpointX + 5)
+      .attr('y1', y(0) + margin.top - 5)
+      .attr('x2', midpointX + 5)
+      .attr('y2', y(0) + margin.top + 5)
 
   // append net migration dots
   var circles = svg.selectAll('g').selectAll('circle')

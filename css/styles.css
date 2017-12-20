@@ -78,7 +78,7 @@ span.out { color: rgba(218, 89, 89, 1); }
 /*.in-selected { fill: #46b481; }
 .out-selected { fill: #da5959; }*/
 
-.center-axis {
+.center-axis, .center-axis-break-vertical {
   stroke: #6b6b6d;
   stroke-width: 1;
 }
