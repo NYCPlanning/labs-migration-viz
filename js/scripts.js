@@ -53,11 +53,19 @@ function highlight(highlightData) {
     });
 
   // update text area
-  $('#char-display-name').text(characteristics[selectedCharacteristic].displayName + ' - ' + highlightData.group);
+  let displayName = characteristics[selectedCharacteristic].displayName;
+  if (selectedCharacteristic !== 'total') displayName = displayName + ' - ' + highlightData.group;
+  $('#char-display-name').text(displayName);
+  $('#char-display-parenthetical').text(characteristics[selectedCharacteristic].displayParenthetical || " ");
+
 
   var yearRange = highlightData.year_range.split('_').join(' and ');
   var direction = (highlightData.in > highlightData.out) ? '<span class="in">net gain' : '<span class="out">net loss';
   var net = Math.abs(highlightData.in - highlightData.out);
+
+  // special handling of the descriptive text for the 'total' characteristic
+  var group = selectedCharacteristic === 'total' ? '' : highlightData.group;
+  var inThisGroup = selectedCharacteristic === 'total' ? '' : 'in this group ';
 
   $('#char-about').html(
     'Between '
@@ -67,13 +75,15 @@ function highlight(highlightData) {
       + '</span> '
       + characteristics[selectedCharacteristic].descriptor
       + ' '
-      + highlightData.group
+      + group
       + ' moved to NYC while <span class="out">'
       + numeral(highlightData.out).format('0,0')
       + '</span> moved out. This resulted in the city\'s '
       + direction + ' of '
       + numeral(net).format('0,0')
-      + '</span> in this group due to migration.'
+      + '</span> '
+      + inThisGroup
+      + 'due to migration.'
   );
 }
 
@@ -81,6 +91,7 @@ function highlight(highlightData) {
 function updateTextArea(characteristic) {
   var thisCharacteristic = characteristics[characteristic];
   $('#char-display-name').text(thisCharacteristic.displayName);
+  $('#char-display-parenthetical').text(thisCharacteristic.displayParenthetical || " ");
   $('#char-about').text(thisCharacteristic.about);
 }
 
@@ -177,11 +188,11 @@ function updateChart() {
 
   svg.selectAll('.in-label')
     .attr('x', 0)
-    .attr('y', margin.top + 100);
+    .attr('y', margin.top + 65);
 
   svg.selectAll('.out-label')
     .attr('x', 0)
-    .attr('y', height - margin.bottom - 50);
+    .attr('y', height - margin.bottom - 25);
 
   // add g elements for each chart, offset by outerX scale
   var g = svg.selectAll('g')
@@ -332,12 +343,19 @@ function updateChart() {
     .append('text')
       .attr('class', function (d) { return 'bar-label net ' + d.group; })
       .attr('text-anchor', 'middle')
-      .text(function (d) { return isNaN(d.in) ? '' : numeral(d.in - d.out).format('0.0a') + ' net'; })
+      .text(function (d) {
+        const net = d.in - d.out;
+
+        if (isNaN(d.in)) return '';
+        if (net > 999) return numeral(net).format('0.0a') + ' net';
+        return (net / 1000).toFixed(1) + 'k'
+
+      })
     .merge(netLabels)
       .attr('x', function (d) { return x(d.group) + (x.bandwidth() / 2); })
       .attr('y', function (d) { return y(-d.out) + 35; });
 
-
+  // zero axis
   svg.selectAll('.center-axis').remove();
   svg.append('line')
     .attr('class', 'center-axis')
@@ -345,7 +363,34 @@ function updateChart() {
     .attr('y1', y(0) + margin.top)
     .attr('x2', width + margin.left + margin.right)
     .attr('y2', y(0) + margin.top)
-    .attr('width', width);
+
+  // zero axis break between 35-40 and 75-80
+
+  const midpointX = outerX.step();
+
+  svg.selectAll('.center-axis-break').remove();
+  svg.append('line')
+    .attr('class', 'center-axis-break')
+    .attr('stroke', '#FFF')
+    .attr('x1', midpointX)
+    .attr('y1', y(0) + margin.top)
+    .attr('x2', midpointX + 5)
+    .attr('y2', y(0) + margin.top)
+
+    svg.selectAll('.center-axis-break-vertical').remove();
+    svg.append('line')
+      .attr('class', 'center-axis-break-vertical')
+      .attr('x1', midpointX)
+      .attr('y1', y(0) + margin.top - 5)
+      .attr('x2', midpointX)
+      .attr('y2', y(0) + margin.top + 5)
+
+    svg.append('line')
+      .attr('class', 'center-axis-break-vertical')
+      .attr('x1', midpointX + 5)
+      .attr('y1', y(0) + margin.top - 5)
+      .attr('x2', midpointX + 5)
+      .attr('y2', y(0) + margin.top + 5)
 
   // append net migration dots
   var circles = svg.selectAll('g').selectAll('circle')

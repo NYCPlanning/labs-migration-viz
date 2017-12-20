@@ -54,6 +54,18 @@ circle {
   stroke-width: 1;
 }
 
+#legend-circle {
+  width: 10px;
+  height: 10px;
+  background: white;
+  border-color: black;
+  border-width: 1.1px;
+  border-style: solid;
+  -moz-border-radius: 5px;
+  -webkit-border-radius: 5px;
+  border-radius: 5px;
+}
+
 .trendline {
   pointer-events: none;
   display: none;
@@ -78,7 +90,7 @@ span.out { color: rgba(218, 89, 89, 1); }
 /*.in-selected { fill: #46b481; }
 .out-selected { fill: #da5959; }*/
 
-.center-axis {
+.center-axis, .center-axis-break-vertical {
   stroke: #6b6b6d;
   stroke-width: 1;
 }
@@ -155,6 +167,10 @@ p.header-label {
   fill: #848484;
 }
 
+#char-display-parenthetical {
+  color: darkred;
+}
+
 /*Legends*/
 
 .legend-color-box {
@@ -162,6 +178,10 @@ p.header-label {
   width: 10px;
   float: left;
   margin-right: 10px;
+}
+
+.key-legend-items {
+  margin: 12px 0 10px 0;
 }
 
 .legend-items {
