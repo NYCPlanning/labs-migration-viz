@@ -54,6 +54,18 @@ circle {
   stroke-width: 1;
 }
 
+#legend-circle {
+  width: 10px;
+  height: 10px;
+  background: white;
+  border-color: black;
+  border-width: 1.1px;
+  border-style: solid;
+  -moz-border-radius: 5px;
+  -webkit-border-radius: 5px;
+  border-radius: 5px;
+}
+
 .trendline {
   pointer-events: none;
   display: none;
@@ -166,6 +178,10 @@ p.header-label {
   width: 10px;
   float: left;
   margin-right: 10px;
+}
+
+.key-legend-items {
+  margin: 12px 0 10px 0;
 }
 
 .legend-items {
