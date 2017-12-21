@@ -18,20 +18,22 @@
 
     <header role="banner">
       <!-- <a href="https://planninglabs.nyc/" class="labs-beta-notice hide-for-print">A beta project of NYC Planning Labs</a> -->
-      <div class="grid-x grid-padding-x">
-        <div class="branding cell auto">
-          <a class="dcp-link" href="http://www1.nyc.gov/site/planning/index.page"><img class="dcp-logo" src="https://raw.githubusercontent.com/NYCPlanning/logo/master/dcp_logo_772.png" alt="NYC Planning"></a>
-          <a href="." class="site-name">
-            Population Stories
-            <small class="site-subtitle show-for-medium">N<span class="show-for-large">ew </span>Y<span class="show-for-large">ork </span>C<span class="show-for-large">ity</span>&rsquo;s Historic Migration</small>
-          </a>
-        </div>
-        <div class="cell shrink show-for-large">
-          <nav role="navigation">
-            <ul class="vertical large-horizontal menu">
-              <li><a href="https://github.com/NYCPlanning/labs-migration-viz" target="_blank">Github</a></li>
-            </ul>
-          </nav>
+      <div class="grid-container">
+        <div class="grid-x grid-padding-x">
+          <div class="branding cell auto">
+            <a class="dcp-link" href="http://www1.nyc.gov/site/planning/index.page"><img class="dcp-logo" src="https://raw.githubusercontent.com/NYCPlanning/logo/master/dcp_logo_772.png" alt="NYC Planning"></a>
+            <a href="." class="site-name">
+              Population Stories
+              <small class="site-subtitle show-for-medium">N<span class="show-for-large">ew </span>Y<span class="show-for-large">ork </span>C<span class="show-for-large">ity</span>&rsquo;s Historic Migration</small>
+            </a>
+          </div>
+          <div class="cell shrink show-for-large">
+            <nav role="navigation">
+              <ul class="vertical large-horizontal menu">
+                <li><a href="https://github.com/NYCPlanning/labs-migration-viz" target="_blank">Github</a></li>
+              </ul>
+            </nav>
+          </div>
         </div>
       </div>
     </header>
@@ -40,95 +42,108 @@
 
   <div class="site-main">
 
-    <div class="grid-x grid-padding-x">
-      <div class="cell large-5 text-small">
+    <div class="grid-container">
+      <div class="grid-x grid-padding-x">
+        <div class="cell large-5 text-small">
 
-        <h3>Who Migrates to and from NYC?</h3>
+          <h3>Who Migrates to and from NYC?</h3>
 
-        <p>The dynamism of migration strengthens NYC and has contributed to the City’s growth in population to an all-time high of 8,537,673 in 2016. These charts show the number of people who moved to or left NYC during each time period, according to census survey data. While NYC has seen wide variations in the volume of migrants through the decades, certain groups are more inclined to come or go. The overall or net effect of migration flows in and out of the city is referred to as net migration. Keep in mind that groups with net migration losses can see their populations grow, as migration losses are often offset by “natural increase” – the number of births exceeding deaths.</p>
+          <p>The dynamism of migration strengthens NYC and has contributed to the City’s growth in population to an all-time high of 8,537,673 in 2016. These charts show the number of people who moved to or left NYC during each time period, according to census survey data. While NYC has seen wide variations in the volume of migrants through the decades, certain groups are more inclined to come or go. The overall or net effect of migration flows in and out of the city is referred to as net migration. Keep in mind that groups with net migration losses can see their populations grow, as migration losses are often offset by “natural increase” – the number of births exceeding deaths.</p>
 
-        <p>Hover over the bars to see trendlines and details for each grouping.</p>
+          <p>Hover over the bars to see trendlines and details for each grouping.</p>
 
-      </div>
-      <div class="cell medium-7 large-4 text-small">
-
-        <h2 class="header-tiny">Selected Characteristic</h2>
-
-        <h3 class="header-medium char-header">
-          <span id="char-display-name"></span>
-          <span id="char-display-parenthetical"></span>
-        </h3>
-
-        <p id="char-about"></p>
-
-      </div>
-      <div id="legend" class="cell medium-5 large-3 text-small">
-
-        <h2 class="header-tiny">Groupings</h2>
-        <div class="legend-items"></div>
-
-        <h2 class="header-tiny">Key</h2>
-        <div class="key-legend-items">
-          <div class="key-legend-item">
-            <div class="legend-color-box"><div id="legend-circle"></div></div><div class="legend-text">Net Migration</div>
-          </div>
         </div>
+        <div class="cell medium-7 large-4 text-small">
 
+          <h2 class="header-tiny">Selected Characteristic</h2>
+
+          <h3 class="header-medium char-header">
+            <span id="char-display-name"></span>
+            <span id="char-display-parenthetical"></span>
+          </h3>
+
+          <p id="char-about"></p>
+
+        </div>
+        <div id="legend" class="cell medium-5 large-3 text-small">
+
+          <h2 class="header-tiny">Groupings</h2>
+          <div class="legend-items"></div>
+
+          <h2 class="header-tiny">Key</h2>
+          <div class="key-legend-items">
+            <div class="key-legend-item">
+              <div class="legend-color-box"><div id="legend-circle"></div></div><div class="legend-text">Net Migration</div>
+            </div>
+          </div>
+
+        </div>
       </div>
+
     </div>
 
     <div class="viz">
 
-      <div class="char-select" role="group" aria-label="..."></div>
+      <div class="grid-container">
 
-      <div class="chart-container"></div>
-      <div class="grid-x">
-        <div class="cell auto year-label">1935 - 1940</div>
-        <div class="cell auto year-label">1975 - 1980</div>
-        <div class="cell auto year-label">1985 - 1990</div>
-        <div class="cell auto year-label">1995 - 2000</div>
-        <div class="cell auto year-label">2010 - 2014</div>
+        <div class="char-select" role="group" aria-label="..."></div>
+
+        <div class="chart-container"></div>
+        <div class="grid-x">
+          <div class="cell auto year-label">1935 - 1940</div>
+          <div class="cell auto year-label">1975 - 1980</div>
+          <div class="cell auto year-label">1985 - 1990</div>
+          <div class="cell auto year-label">1995 - 2000</div>
+          <div class="cell auto year-label">2010 - 2014</div>
+        </div>
+
       </div>
 
     </div>
 
-    <div class="grid-x grid-padding-x text-small" id="data">
-      <div class="cell medium-6">
+    <div class="grid-container">
+      <div class="grid-x grid-padding-x text-small" id="data">
+        <div class="cell medium-6">
 
-        <h4 class="header-small">About the Data</h4>
+          <h4 class="header-small">About the Data</h4>
 
-        <p>Until 2000, the long form census asked respondents where they lived "5 years ago." Beginning in 2006, the American Community Survey asked respondents where they lived "1 year ago." The ACS data has been adjusted to be historically comparable. The full methodology is forthcoming.</p>
+          <p>Until 2000, the long form census asked respondents where they lived "5 years ago." Beginning in 2006, the American Community Survey asked respondents where they lived "1 year ago." The ACS data has been adjusted to be historically comparable. The full methodology is forthcoming.</p>
 
-        <p>Raw data from IPUMS-USA, University of Minnesota, <a href="https://usa.ipums.org/usa/index.shtml">www.ipums.org</a>: 1940 1% Sample, 1980 5% State Sample, 1990 5% Sample, 2000 5% Sample, and 2010-14 ACS.</p>
+          <p>Raw data from IPUMS-USA, University of Minnesota, <a href="https://usa.ipums.org/usa/index.shtml">www.ipums.org</a>: 1940 1% Sample, 1980 5% State Sample, 1990 5% Sample, 2000 5% Sample, and 2010-14 ACS.</p>
 
-      </div>
-      <div class="cell medium-6">
+        </div>
+        <div class="cell medium-6">
 
-        <h4 class="header-small">Download</h4>
+          <h4 class="header-small">Download</h4>
 
-        <p>Download the data that powers this visualization.</p>
+          <p>Download the data that powers this visualization.</p>
 
-        <a class="button small" href="data/historic_migration_selchars.csv" rel="nofollow" id="csv-download"><i class="fa fa-download" aria-hidden="true"></i></span> CSV</a>
+          <a class="button small" href="data/historic_migration_selchars.csv" rel="nofollow" id="csv-download"><i class="fa fa-download" aria-hidden="true"></i></span> CSV</a>
 
-        <a class="button small" href="data/historic_migration_selchars_readme.txt" rel="nofollow" download="readme" id="readme-download"><i class="fa fa-download" aria-hidden="true"></i></span> README</a>
+          <a class="button small" href="data/historic_migration_selchars_readme.txt" rel="nofollow" download="readme" id="readme-download"><i class="fa fa-download" aria-hidden="true"></i></span> README</a>
 
+        </div>
       </div>
     </div>
 
   </div>
 
-  <div class="site-footer grid-x grid-padding-x">
-    <div class="cell shrink">
+  <div class="site-footer">
+    <div class="grid-container">
+      <div class="grid-x grid-padding-x">
+        <div class="cell shrink">
 
-      <p><a href="http://www1.nyc.gov/site/planning/index.page"><img class="logo" style="width:80px;" src="https://raw.githubusercontent.com/NYCPlanning/logo/master/dcp_logo_772.png" alt="DCP"></a></p>
+          <p><a href="http://www1.nyc.gov/site/planning/index.page"><img class="logo" style="width:80px;" src="https://raw.githubusercontent.com/NYCPlanning/logo/master/dcp_logo_772.png" alt="DCP"></a></p>
 
-    </div>
-    <div class="cell auto text-small ">
+        </div>
+        <div class="cell auto text-small ">
 
-      <p class="dark-gray" style="margin-bottom:0.5rem;">A project by NYC Department of City Planning's Population Division and <a href="http://planninglabs.nyc">NYC Planning Labs</a>.</p>
+          <p class="dark-gray" style="margin-bottom:0.5rem;">A project by NYC Department of City Planning's Population Division and <a href="http://planninglabs.nyc">NYC Planning Labs</a>.</p>
 
-      <a href="https://github.com/NYCPlanning/labs-migration-viz/issues/" target="_blank"><i class="fa fa-github" aria-hidden="true"></i> Report a bug</a>
+          <a href="https://github.com/NYCPlanning/labs-migration-viz/issues/" target="_blank"><i class="fa fa-github" aria-hidden="true"></i> Report a bug</a>
 
+        </div>
+      </div>
     </div>
   </div>
 
